@@ -7,7 +7,7 @@ on:
         description: "Brand: Select your brand"
         required: true
         type: choice
-        default: oneplus
+        default: xiaomi
         options:
           - xiaomi
 
