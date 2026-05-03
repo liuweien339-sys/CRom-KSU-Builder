@@ -97,7 +97,7 @@ on:
           - KernelSU-by-xx
           - ReSukiSU
           - ReSukiSU-with-susfs
-
+          - SukiSUUltra
       susfs-gki:
         description: "SUSFS-GKI: select ur kernel version(for gki)"
         required: true
@@ -346,6 +346,10 @@ jobs:
 
             "ReSukiSU"|"ReSukiSU-with-susfs")
               curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash -s main
+              ;;
+
+            "SukiSUUltra")
+              curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s main || exit 1
               ;;
 
           esac
