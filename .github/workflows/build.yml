@@ -9,15 +9,13 @@ on:
         type: choice
         default: oneplus
         options:
-          - oneplus
           - xiaomi
-          - sony
 
       soc:
         description: "SOC: Type your soc"
         required: true
         type: string
-        default: "sm8550"
+        default: "gauguin"
 
       clang_version:
         description: "Clang-Version: Select the clang version of ur kernel"
@@ -63,13 +61,13 @@ on:
         description: "Kernel-Branch: such as lineage-23.2 sixteen-qpr1 etc."
         required: true
         type: string
-        default: ""
+        default: "lineage-23.2"
         
       kernel_configs:
         description: "Kernel-Configs: Select ur kernel configs(Use Manual-Type to custom it)"
         required: true
         type: choice
-        default: oplus-sm8550-los
+        default: Manual-Type
         options:
           - Manual-Type
           - oplus-sm8150-los
@@ -83,12 +81,13 @@ on:
         description: "Kernel-Configs-Manual: If u selected Manual-Type in previous options, manually type ur kernel configs here."
         required: false
         type: string
-        default: ""
+        default: "vendor/xiaomi/gauguin.config"
 
       ksu_type:
         description: "KSU: KernelSU Version"
         required: true
         type: choice
+        default: "ReSukiSU"
         options:
           - None
           - Official-KernelSU
@@ -130,7 +129,7 @@ on:
         description: "DroidSpaces: Enable DroidSpaces"
         required: true
         type: choice
-        default: None
+        default: 3.18-4.19
         options:
           - None
           - 5.4-6.6
@@ -140,7 +139,7 @@ on:
         description: "Has-Modules-Repo: Enable this ur kernel has modules repo"
         required: true
         type: boolean
-        default: true
+        default: false
 
       enable_tmpfs-xattr:
         description: "TMPFS_XATTR: U can enable this if ur kernel has no CONFIG_TMPFS_XATTR=y"
@@ -152,13 +151,13 @@ on:
         description: "Enable-GCC: Enable the GCC support"
         required: true
         type: boolean
-        default: false
+        default: true
       
       enable_gcc_32bits:
         description: "Enable-GCC-32Bits: Enable the 32Bits GCC support"
         required: true
         type: boolean
-        default: false
+        default: true
 
       fuck_modules_sig_protect:
         description: "Fuck-Modules-Sig-Protect: FUCK MODULES SIG Protectttt"
