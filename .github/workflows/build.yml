@@ -87,7 +87,7 @@ on:
         description: "KSU: KernelSU Version"
         required: true
         type: choice
-        default: "ReSukiSU"
+        default: "KernelSU-Next"
         options:
           - None
           - Official-KernelSU
