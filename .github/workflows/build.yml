@@ -81,7 +81,7 @@ on:
         description: "Kernel-Configs-Manual: If u selected Manual-Type in previous options, manually type ur kernel configs here."
         required: false
         type: string
-        default: "vendor/xiaomi/gauguin.config"
+        default: "vendor/lito-perf_defconfig vendor/xiaomi/gauguin.config"
 
       ksu_type:
         description: "KSU: KernelSU Version"
