@@ -157,7 +157,7 @@ on:
         description: "Enable-GCC-32Bits: Enable the 32Bits GCC support"
         required: true
         type: boolean
-        default: true
+        default: false
 
       fuck_modules_sig_protect:
         description: "Fuck-Modules-Sig-Protect: FUCK MODULES SIG Protectttt"
