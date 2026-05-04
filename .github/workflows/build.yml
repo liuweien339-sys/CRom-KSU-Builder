@@ -117,7 +117,7 @@ on:
         description: "SUSFS-NONGKI: select ur kernel version(for nongki)"
         required: true
         type: choice
-        default: None
+        default: 4.19
         options:
           - None
           - 4.9
