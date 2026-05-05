@@ -419,14 +419,6 @@ jobs:
 
           touch ./.scmversion
           
-      - name: Test KVM Enable
-        run: |
-          cd ${GITHUB_WORKSPACE}/gauguin
-          scripts/config --enable CONFIG_KVM=y
-          scripts/config --enable CONFIG_HAVE_KVM=y
-          scripts/config --enable CONFIG_VIRTUALIZATION=y
-          scripts/config --enable CONFIG_KVM_ARM_HOST=y
-          
       - name: Make Kernel Configs
         run: |
           sed -i 's/EXTRAVERSION = .*/EXTRAVERSION = -32457-DS-Lineage23.2/' ${GITHUB_WORKSPACE}/gauguin/Makefile
