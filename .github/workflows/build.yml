@@ -534,9 +534,8 @@ jobs:
             echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> out/.config
             echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> out/.config
             echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> out/.config
-
           fi
-          
+            sed -i 's/EXTRAVERSION = .*/EXTRAVERSION = -32457-DS-Lineage23.2/' ${GITHUB_WORKSPACE}/gauguin/Makefile
       - name: Check makefile modified
         run: |
           grep "EXTRAVERSION =" ${GITHUB_WORKSPACE}/gauguin/Makefile
