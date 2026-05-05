@@ -536,7 +536,11 @@ jobs:
             echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> out/.config
 
           fi
-
+          
+      - name: Check makefile modified
+        run: |
+          grep "EXTRAVERSION =" ${GITHUB_WORKSPACE}/gauguin/Makefile
+          
       - name: Build Kernel Image
         run: |
           CLANG_ROOT="${GITHUB_WORKSPACE}/toolchains/${{ inputs.clang_version }}/bin"
