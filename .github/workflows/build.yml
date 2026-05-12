@@ -583,9 +583,14 @@ jobs:
 
           zip -r9 ../"${ZIP_NAME}.zip" * -x .git
 
-      - name: Create GitHub Release
-        run: |
-          REL_NAME="${{ inputs.soc }}_${{ inputs.kernel_source }}-${{ inputs.kernel_branch }}_${{ inputs.ksu_type }}_$(date -u +"%Y%m%d_%H%M")"
-          cd ${GITHUB_WORKSPACE} || exit 1
-          ZIP_FILE=$(ls *.zip)
-          gh release create "$REL_NAME" --title "$REL_NAME" --notes "" "${ZIP_FILE}" Image build.log options.txt
+      - name: Upload to GitHub Actions Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+         name: ${{ inputs.soc }}_${{ inputs.kernel_source }}-${{ inputs.kernel_branch }}_${{ inputs.ksu_type }}_$(date -u +"%Y%m%d_%H%M")
+         path: |
+          *.zip
+          Image
+          build.log
+          options.txt
+         if-no-files-found: error
+         compression-level: 6
