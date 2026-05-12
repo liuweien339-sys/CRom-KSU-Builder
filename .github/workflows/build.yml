@@ -97,7 +97,8 @@ on:
           - KernelSU-by-xx
           - ReSukiSU
           - ReSukiSU-with-susfs
-          - SukiSUUltra
+          - SukiSUUltra NonGKI
+          - SukiSUUltra-Plus NonGKI
       susfs-gki:
         description: "SUSFS-GKI: select ur kernel version(for gki)"
         required: true
@@ -348,10 +349,13 @@ jobs:
               curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash -s main
               ;;
 
-            "SukiSUUltra")
+            "SukiSUUltra NonGKI")
               curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s main || exit 1
               ;;
 
+            "SukiSUUltra Plus NonGKI")
+               curl -LSs "https://raw.githubusercontent.com/ailixiyaX/SukiSU-Ultra-Plus/main/kernel/setup.sh" | bash -s nongki || exit 1
+              ;;
           esac
 
           if [[ "${{ inputs.droidspaces }}" == "5.4-6.6" ]]; then
