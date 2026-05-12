@@ -426,11 +426,6 @@ jobs:
           
       - name: Make Kernel Configs
         run: |
-          sed -i 's/EXTRAVERSION = .*/EXTRAVERSION = -32457-DS-Lineage23.2/' ${GITHUB_WORKSPACE}/gauguin/Makefile
-          scripts/config --enable CONFIG_EFI
-          scripts/config --enable CONFIG_EFI_STUB
-          scripts/config --enable CONFIG_EFI_VARS 
-          scripts/config --enable CONFIG_EFI_RUNTIME_MAP
           CLANG_ROOT="${GITHUB_WORKSPACE}/toolchains/${{ inputs.clang_version }}/bin"
           export PATH="${CLANG_ROOT}:$PATH"
           export ARCH=arm64
@@ -544,11 +539,6 @@ jobs:
             echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> out/.config
             echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> out/.config
           fi
-            sed -i 's/EXTRAVERSION = .*/EXTRAVERSION = -32457-DS-Lineage23.2/' ${GITHUB_WORKSPACE}/gauguin/Makefile
-            
-      - name: Check makefile modified
-        run: |
-          grep "EXTRAVERSION =" ${GITHUB_WORKSPACE}/gauguin/Makefile
           
       - name: Build Kernel Image
         run: |
