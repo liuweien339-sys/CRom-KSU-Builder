@@ -25,6 +25,6 @@ Frok这个仓库
 输入你内核源码的分支
 选择Root管理器
 最后点击Running Workflow进行编译
-编译结果包含在Releases里面
+编译结果包含在Actions里面
 
 我添加了关于RedmiNote9Pro Guaguin LineageOS23.2的支持在Default里面 直接Running Workflow就行 如果你是gauguin  
