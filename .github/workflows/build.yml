@@ -249,6 +249,7 @@ jobs:
           echo "fuck_modules_sig_protect:${{ inputs.fuck_modules_sig_protect }}" >> options.txt
           echo "fuck_werror:${{ inputs.fuck_werror }}" >> options.txt
           echo "enable_my_own_susfs_patch:${{ inputs.enable_my_own_susfs_patch }}" >> options.txt
+          
       - name: Clone Kernel Source
         run: |
           if [[ "${{ inputs.kernel_source }}" == "Manual-Type" ]]; then
@@ -573,9 +574,7 @@ jobs:
       - name: Make AnyKernel3
         run: |
           ZIP_NAME="${{ inputs.soc }}_${{ inputs.kernel_source }}-${{ inputs.kernel_branch }}_${{ inputs.ksu_type }}_$(date -u +"%Y%m%d_%H%M")"
-          git clone https://github.com/Kernel-SU/AnyKernel3.git || exit 1
-
-          cp ${{ inputs.soc }}/out/arch/arm64/boot/Image AnyKernel3/Image
+          git clone https://github.com/Kernel-SU/AnyKer
           cp ${{ inputs.soc }}/out/arch/arm64/boot/Image ./Image
           cd AnyKernel3 || exit 1
 
@@ -586,7 +585,7 @@ jobs:
       - name: Upload to GitHub Actions Artifacts
         uses: actions/upload-artifact@v4
         with:
-         name: ${{ inputs.soc }}_${{ inputs.kernel_source }}-${{ inputs.kernel_branch }}_${{ inputs.ksu_type }}_$(date -u +"%Y%m%d_%H%M")
+         name: kernel
          path: |
           *.zip
           Image
