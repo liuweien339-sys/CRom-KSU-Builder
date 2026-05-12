@@ -14,3 +14,17 @@ https://github.com/backslashxx/ksu_toolkit
 
 Inferno's build(ksu ksunext sukisu)
 https://github.com/inferno0230/kernel_oneplus_sm8550-CI
+
+***先读说明***
+Main分支支持安卓16
+怎么用:
+Frok这个仓库 
+打开Action页面
+选择Clang版本 安卓16QPR0用r547379 QPR2用r563880c/r063880
+输入内核源码地址
+输入你内核源码的分支
+选择Root管理器
+最后点击Running Workflow进行编译
+编译结果包含在Releases里面
+
+我添加了关于RedmiNote9Pro Guaguin LineageOS23.2的支持在Default里面 直接Running Workflow就行 如果你是gauguin  
