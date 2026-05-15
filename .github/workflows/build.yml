@@ -413,8 +413,8 @@ jobs:
               curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_${{ inputs.susfs-nongki }}.patch || exit 1
               curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
 
-              patch -p1 < susfs.patch
-              bash inline.sh
+              patch -p1 < susfs.patch || true
+              bash inline.sh || true
 
             fi
 
