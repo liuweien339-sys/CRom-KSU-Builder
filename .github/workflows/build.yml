@@ -377,48 +377,11 @@ jobs:
             cp ${GITHUB_WORKSPACE}/configs/droidspaces-nongki.config arch/arm64/configs/vendor/droidspaces.config
 
           fi
-
-            if [[ "${{ inputs.susfs-gki }}" == "None" && "${{ inputs.susfs-nongki }}" == "None" ]]; then
-
-              echo "skip susfs"
-
-            elif [[ "${{ inputs.susfs-gki }}" != "None" && "${{ inputs.susfs-nongki }}" != "None" ]]; then
-
-              echo "what do you mean???, why selected susfs for gki and nongki at the same time"
-              exit 1
-
-            elif [[ "${{ inputs.susfs-gki }}" != "None" ]]; then
-
-              git clone -b gki-${{ inputs.susfs-gki }} https://gitlab.com/simonpunk/susfs4ksu.git susfs || exit 1
-              cd susfs || exit 1
-              cp ./kernel_patches/50_add_susfs_in_gki-${{ inputs.susfs-gki }}.patch ../susfs.patch
-              cp ./kernel_patches/fs/* ../fs/
-              cp ./kernel_patches/include/linux/* ../include/linux/
-              cd .. || exit 1
-
-              if [[ "${{ inputs.enable_my_own_susfs_patch }}" == "true" ]]; then
-
-                if [[ "${{ inputs.susfs-gki }}" == "android13-5.15" ]]; then
-
-                  patch -p0 < ${GITHUB_WORKSPACE}/patches/fix_task_mmu_5.15.patch
-
-                fi
-
-              fi
-
-              patch -p1 < susfs.patch || true
-
-            elif [[ "${{ inputs.susfs-nongki }}" != "None" ]]; then
-
               curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_${{ inputs.susfs-nongki }}.patch || exit 1
               curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
 
               patch -p1 < susfs.patch || true
               bash inline.sh || true
-
-            fi
-
-          fi
 
           touch ./.scmversion
           
