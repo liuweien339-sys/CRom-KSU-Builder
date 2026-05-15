@@ -378,8 +378,6 @@ jobs:
 
           fi
 
-          if [[ "${{ inputs.ksu_type }}" == *susfs* ]]; then
-
             if [[ "${{ inputs.susfs-gki }}" == "None" && "${{ inputs.susfs-nongki }}" == "None" ]]; then
 
               echo "skip susfs"
