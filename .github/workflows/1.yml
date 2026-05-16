@@ -2,3 +2,24 @@ name: Build Toolchain
 
 on:
   workflow_dispatch:
+jobs:
+  Kernel_CI:
+    env:
+        GH_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+      checks: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build pahole
+        run: |
+          sudo apt update
+          sudo apt install -y cmake
+          git clone https://github.com/acmel/dwarves.git
+          cd dwarves
+          mkdir build && cd build
+          cmake ..
+          make
+    
