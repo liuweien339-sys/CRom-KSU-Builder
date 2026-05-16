@@ -1,0 +1,4 @@
+name: Build Toolchain
+
+on:
+  workflow_dispatch:
