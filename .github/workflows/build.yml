@@ -210,8 +210,8 @@ jobs:
           curl \
           dwarves \
           cpio \
-          gcc-aarch64-linux-gnu
-          
+          gcc-aarch64-linux-gnu \
+          linux-tools-common
       - name: Save options
         run: |
           echo "brand:${{ inputs.brand }}"
