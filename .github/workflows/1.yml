@@ -36,10 +36,10 @@ jobs:
         with:
          name: toolchain
          path: |
-          pahole
-          ctfmerge
-          ctudump
-          codiff
-          dtagnames
+          dwarves/build/pahole
+          dwarves/build/ctfmerge
+          dwarves/build/ctudump
+          dwarves/build/codiff
+          dwarves/build/dtagnames
          if-no-files-found: error
          compression-level: 6
