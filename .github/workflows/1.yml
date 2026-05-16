@@ -3,7 +3,7 @@ name: Build Toolchain
 on:
   workflow_dispatch:
 jobs:
-  Kernel_CI:
+  Build:
     env:
         GH_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
@@ -16,10 +16,30 @@ jobs:
       - name: Build pahole
         run: |
           sudo apt update
-          sudo apt install -y cmake
+          sudo apt install -y \
+          build-essential \
+          cmake \
+          git \
+          flex \
+          bison \
+          libelf-dev \
+          libdw-dev \
+          libzstd-dev \
+          zlib1g-dev
           git clone https://github.com/acmel/dwarves.git
           cd dwarves
           mkdir build && cd build
           cmake ..
           make
-    
+      - name: Upload to GitHub Actions Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+         name: toolchain
+         path: |
+          pahole
+          ctfmerge
+          ctudump
+          codiff
+          dtagnames
+         if-no-files-found: error
+         compression-level: 6
