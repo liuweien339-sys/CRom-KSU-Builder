@@ -252,7 +252,7 @@ jobs:
       - name: Clone Kernel Source
         run: |
 
-            git clone --depth=1 https://github.com/OnePlusOSS/android_kernel_oneplus_sm6375.git -b oneplus/sm6375_b_16.0.0_nord_ce4_lite_5g sm6375 sm6735
+            git clone --depth=1 https://github.com/OnePlusOSS/android_kernel_oneplus_sm6375.git -b oneplus/sm6375_b_16.0.0_nord_ce4_lite_5g sm6375
             git clone --depth=1 https://github.com/OnePlusOSS/android_kernel_modules_and_devicetree_oneplus_sm6375.git -b oneplus/sm6375_b_16.0.0_nord_ce4_lite_5g sm6375m
       - name: Download AOSP Clang
         run: |
