@@ -34,7 +34,7 @@ on:
         description: "Kernel-Source: Kernel repo's org/user on github"
         required: true
         type: choice
-        default: LineageOS
+        default: None
         options:
           - Manual-Type
           - LineageOS
@@ -61,7 +61,7 @@ on:
         description: "Kernel-Branch: such as lineage-23.2 sixteen-qpr1 etc."
         required: true
         type: string
-        default: "lineage-23.2"
+        default: "None"
         
       kernel_configs:
         description: "Kernel-Configs: Select ur kernel configs(Use Manual-Type to custom it)"
@@ -81,8 +81,7 @@ on:
         description: "Kernel-Configs-Manual: If u selected Manual-Type in previous options, manually type ur kernel configs here."
         required: false
         type: string
-        default: "vendor/lito-perf_defconfig vendor/xiaomi/gauguin.config"
-
+        default: "vendor/niobe_GKI.config"
       ksu_type:
         description: "KSU: KernelSU Version"
         required: true
@@ -118,7 +117,7 @@ on:
         description: "SUSFS-NONGKI: select ur kernel version(for nongki)"
         required: true
         type: choice
-        default: 4.19
+        default: None
         options:
           - None
           - 4.9
@@ -130,7 +129,7 @@ on:
         description: "DroidSpaces: Enable DroidSpaces"
         required: true
         type: choice
-        default: 3.18-4.19
+        default: 5.4-6.6
         options:
           - None
           - 5.4-6.6
