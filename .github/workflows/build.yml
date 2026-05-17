@@ -322,7 +322,7 @@ jobs:
           cd ${{ inputs.soc }} || exit 1
           cd ${GITHUB_WORKSPACE}/gauguin/kernel
           git clone https://github.com/bmax121/kernelpatch --depth=1 kpm
-          cp ${GITHUB_WORKSPACE}/gauguin/kpm/kernel ${GITHUB_WORKSPACE}/gauguin/kernel/
+          cp ${GITHUB_WORKSPACE}/gauguin/kernel/kpm/kernel ${GITHUB_WORKSPACE}/gauguin/kernel/
           echo 'obj-$(CONFIG_KPM) += kpm/' >> ${GITHUB_WORKSPACE}/gauguin/kernel/Makefile
           source ${GITHUB_WORKSPACE}/gauguin/kernel/Kconfig
 
