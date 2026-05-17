@@ -320,6 +320,12 @@ jobs:
       - name: Include goodies
         run: |
           cd ${{ inputs.soc }} || exit 1
+          mkdir ~/guaguin/kpm
+          cd ~/gauguin/kpm
+          git clone https://github.com/bmax121/kernelpatch --depth=1
+          cp ~/gauguin/kpm/kernel ~/gauguin/kernel/
+          echo 'obj-$(CONFIG_KPM) += kpm/' >> kernel/Makefile
+          source ~/gauguin/kernel/Kconfig
 
           case "${{ inputs.ksu_type }}" in
 
