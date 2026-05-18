@@ -538,7 +538,7 @@ jobs:
 
           cd ${{ inputs.soc }} || exit 1
 
-          make -j6 O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
+          make -j$(nproc) O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
 
       - name: Make AnyKernel3
         run: |
