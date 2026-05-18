@@ -375,6 +375,7 @@ jobs:
             patch -p1 < patch2.patch
 
             cp ${GITHUB_WORKSPACE}/configs/droidspaces-nongki.config arch/arm64/configs/vendor/droidspaces.config
+            cp ${GITHUB_WORKSPACE}/fixtphook/Kbuild drivers/kernelsu/
 
           fi
               #curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_${{ inputs.susfs-nongki }}.patch || exit 1
