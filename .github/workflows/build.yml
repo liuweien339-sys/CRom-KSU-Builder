@@ -398,6 +398,10 @@ jobs:
               #endif' fs/namespace.c
 
               sed -i 's/\.handle_inode_event/.handle_event/' drivers/kernelsu/manager/pkg_observer.c
+
+              sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
+
+              sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
               
           touch ./.scmversion
           
