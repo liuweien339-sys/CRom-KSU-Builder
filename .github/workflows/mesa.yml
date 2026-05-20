@@ -18,8 +18,7 @@ jobs:
             gcc g++ clang lld \
             libdrm-dev libx11-dev libxcb-shm0-dev \
             libxcb-composite0-dev libxcb-util0-dev \
-            libwayland-dev wayland-protocols meson \
-            gslang-tools
+            libwayland-dev wayland-protocols meson 
 
       - name: Setup Android NDK
         run: |
