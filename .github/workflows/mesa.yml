@@ -1,0 +1,50 @@
+name: Build Turnip Vulkan Driver
+
+on:
+  workflow_dispatch:  # 手动触发
+jobs:
+  build-turnip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Mesa
+        run: git clone --depth 1 https://gitlab.freedesktop.org/mesa/mesa.git
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            python3 python3-pip meson ninja-build \
+            pkg-config bison flex cmake \
+            gcc g++ clang lld \
+            libdrm-dev libx11-dev libxcb-shm0-dev \
+            libxcb-composite0-dev libxcb-util0-dev \
+            libwayland-dev wayland-protocols
+
+      - name: Setup Android NDK
+        run: |
+          wget https://dl.google.com/android/repository/android-ndk-r26b-linux.zip
+          unzip android-ndk-r26b-linux.zip -d $HOME
+          echo "NDK_PATH=$HOME/android-ndk-r26b" >> $GITHUB_ENV
+
+      - name: Configure Mesa
+        run: |
+          cd mesa
+          meson setup build \
+            -Dplatforms=android \
+            -Dvulkan-drivers=freedreno \
+            -Dgallium-drivers= \
+            -Ddri-drivers= \
+            -Dllvm=disabled \
+            -Dandroid-ndk=$NDK_PATH \
+            -Dbuildtype=release
+
+      - name: Compile Turnip
+        run: |
+          cd mesa
+          ninja -C build -j2
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: libvulkan_freedreno
+          path: mesa/build/src/freedreno/vulkan/libvulkan_freedreno.so
