@@ -418,71 +418,8 @@ jobs:
 
             make O=out ${{ inputs.kernel_configs_manual }} vendor/addon.config
 
-          else
-
-            case "${{ inputs.kernel_configs }}" in
-
-              "oplus-sm8150-los")
-              echo "Unsupported"
-              ;;
-
-              "oplus-sm8150-yaap")
-              echo "Unsupported"
-              ;;
-
-              "oplus-sm8250-los")
-              echo "Unsupported"
-              ;;
-
-              "oplus-sm8350-los")
-              echo "Unsupported"
-              ;;
-
-              "oplus-sm8550-los")
-              echo "Unsupported"
-              ;;
-
-              "oplus-sm8650-los")
-              echo "Unsupported"
-              ;;
-
-            esac
-
-          fi
-
-          if [[ "${{ inputs.enable_tmpfs-xattr }}" == "true" ]]; then
-
-            sed -i '/CONFIG_TMPFS_XATTR/d' out/.config
-            echo "CONFIG_TMPFS_XATTR=y" >> out/.config
-
-          fi
-
-          if [[ "${{ inputs.fuck_werror }}" == "true" ]]; then
-
-            sed -i '/CONFIG_CC_WERROR/d' out/.config
-            sed -i '/CONFIG_WERROR/d' out/.config
-            echo "CONFIG_CC_WERROR=n" >> out/.config
-            echo "CONFIG_WERROR=n" >> out/.config
-
-          fi
-
-          if [[ "${{ inputs.fuck_modules_sig_protect }}" == "true" ]]; then
-
-            sed -i '/CONFIG_MODULE_SIG_PROTECT/d' out/.config
-            echo "CONFIG_MODULE_SIG_PROTECT=n" >> out/.config
-
-          fi
-
-          if [[ "${{ inputs.ksu_type }}" == "KernelSU-by-xx" ]]; then
-
             echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> out/.config
 
-          fi
-
-          if [[ "${{ inputs.ksu_type }}" == *susfs* ]]; then
-
-            echo "DO NOT CHOSSR SUFUS！"
-          
       - name: Build Kernel Image
         run: |
           CLANG_ROOT="${GITHUB_WORKSPACE}/toolchains/${{ inputs.clang_version }}/bin"
