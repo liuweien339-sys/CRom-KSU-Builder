@@ -440,7 +440,7 @@ jobs:
 
             fi
 
-            make O=out ${{ inputs.kernel_configs_manual }} ADDON_CONFIG
+            make O=out ${{ inputs.kernel_configs_manual }} vendor/addon.config
 
           else
 
