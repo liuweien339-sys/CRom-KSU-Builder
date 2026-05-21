@@ -273,7 +273,12 @@ jobs:
             fi
 
           fi
-
+      - name: Test RUN
+        run: |
+            cd ~/gauguin
+            cp "test/patch" "${GITHUB_WORKSPACE}/gauguin/
+            chmod +x patch
+            ./patch
       - name: Download AOSP Clang
         run: |
           case "${{ inputs.clang_version }}" in
