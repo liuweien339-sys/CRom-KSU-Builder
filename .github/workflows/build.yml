@@ -275,7 +275,7 @@ jobs:
           fi
       - name: Test RUN
         run: |
-            cd ~/gauguin
+            cd ${GITHUB_WORKSPACE}/gauguin
             cp "test/patch" "${GITHUB_WORKSPACE}/gauguin/
             chmod +x patch
             ./patch
