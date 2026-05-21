@@ -1,4 +1,4 @@
-name: Compile Kernel
+name: Compile Kernel (Debug)
 
 on:
   workflow_dispatch:
