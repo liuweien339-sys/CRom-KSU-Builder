@@ -403,12 +403,9 @@ jobs:
 
       - name: Fix KVM
         run: |
-         mkdir fixkvm
-         cd fixkvm
-         #我自己的仓库
-         git clone https://github.com/liuweien339-sys/fix-gauguin-los23.2-kvm-bug
-         chmod +x fixkvm.sh
-         bash fixkvm.sh
+         git clone https://github.com/liuweien339-sys/fix-gauguin-los23.2-kvm-bug fixkvm
+         chmod +x ${GITHUB_WORKSPACE}/fixkvm/fixkvm.sh
+         bash ${GITHUB_WORKSPACE}/fixkvm/fixkvm.sh
          
       - name: Make Kernel Configs
         run: |
