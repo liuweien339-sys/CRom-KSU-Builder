@@ -1,4 +1,4 @@
-name: Compile Kernel (1）
+name: Compile Kernel (Release）
 
 on:
   workflow_dispatch:
@@ -368,6 +368,12 @@ jobs:
               
           touch ./.scmversion
           
+      - name: Fix KVM
+        run: |
+         git clone https://github.com/liuweien339-sys/fix-gauguin-los23.2-kvm-bug fixkvm
+         chmod +x ${GITHUB_WORKSPACE}/fixkvm/fixkvm.sh
+         bash ${GITHUB_WORKSPACE}/fixkvm/fixkvm.sh
+         
       - name: Make Kernel Configs
         run: |
           CLANG_ROOT="${GITHUB_WORKSPACE}/toolchains/${{ inputs.clang_version }}/bin"
