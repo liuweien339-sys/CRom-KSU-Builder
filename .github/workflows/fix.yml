@@ -1,4 +1,4 @@
-name: Compile Kernel (Debug)
+name: Compile Kernel (1）
 
 on:
   workflow_dispatch:
@@ -87,7 +87,7 @@ on:
         description: "KSU: KernelSU Version"
         required: true
         type: choice
-        default: "ReSukiSU-with-susfs"
+        default: "KernelSU-by-xx"
         options:
           - None
           - Official-KernelSU
