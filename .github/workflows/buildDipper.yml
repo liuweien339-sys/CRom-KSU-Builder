@@ -377,7 +377,23 @@ jobs:
               sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
               
           touch ./.scmversion
-         
+
+      - name: Fix EFI stub strrchr
+        run: |
+         cat > $GITHUB_WORKSPACE/sdm845/drivers/firmware/efi/libstub/strrchr.c << 'EOF'
+         #include <linux/types.h>
+         char *__efistub_strrchr(const char *s, int c)
+         {
+              const char *last = NULL;
+              do {
+                  if (*s == (char)c)
+                      last = s;
+              } while (*s++);
+              return (char *)last;
+          }
+          EOF
+    
+          sed -i '/^lib-y/a lib-$(CONFIG_EFI_STUB) += strrchr.o' \$GITHUB_WORKSPACE/sdm845/drivers/firmware/efi/libstub/Makefile
       - name: Make Kernel Configs
         run: |
           CLANG_ROOT="${GITHUB_WORKSPACE}/toolchains/${{ inputs.clang_version }}/bin"
