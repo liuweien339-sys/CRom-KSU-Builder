@@ -81,7 +81,7 @@ on:
         description: "Kernel-Configs-Manual: If u selected Manual-Type in previous options, manually type ur kernel configs here."
         required: false
         type: string
-        default: "vendor/sdm845-perf.config vendor/xiaomi/dipper.config"
+        default: "vendor/sdm845-perf_defconfig vendor/xiaomi/dipper.config"
 
       ksu_type:
         description: "KSU: KernelSU Version"
