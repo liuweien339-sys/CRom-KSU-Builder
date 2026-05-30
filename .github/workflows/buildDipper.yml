@@ -408,7 +408,7 @@ jobs:
           export ARCH=arm64
           export SUBARCH=arm64
           export LLVM=1
-          export LLVM_IAS=1
+          export LLVM_IAS=0
 
           if [[ "${{ inputs.enable_gcc }}" == "true" ]]; then
 
@@ -524,7 +524,7 @@ jobs:
           export ARCH=arm64
           export SUBARCH=arm64
           export LLVM=1
-          export LLVM_IAS=1
+          export LLVM_IAS=0
 
           if [[ "${{ inputs.enable_gcc }}" == "true" ]]; then
 
