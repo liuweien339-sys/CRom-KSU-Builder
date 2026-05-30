@@ -404,8 +404,8 @@ jobs:
       - name: Fix KVM
         run: |
          git clone https://github.com/liuweien339-sys/fix-gauguin-los23.2-kvm-bug fixkvm
-         chmod +x ${GITHUB_WORKSPACE}/fixkvm/fixkvm.sh
-         bash ${GITHUB_WORKSPACE}/fixkvm/fixkvm.sh
+         chmod +x ${GITHUB_WORKSPACE}/fixkvm/dipper.sh
+         bash ${GITHUB_WORKSPACE}/fixkvm/dipper.sh
          
       - name: Make Kernel Configs
         run: |
