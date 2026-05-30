@@ -546,8 +546,10 @@ jobs:
 
           cd ${{ inputs.soc }} || exit 1
 
-          make -j6 O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
-
+          make -j6 O=out modules 2>&1 | tee ${GITHUB_WORKSPACE}/buildm.log
+          cp ${GITHUB_WORKSPACE}/gauguin/drivers/android/* ${GITHUB_WORKSPACE}/
+          make -j6 O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/buildy.log
+          
       - name: Make AnyKernel3
         run: |
           ZIP_NAME="${{ inputs.soc }}_${{ inputs.kernel_source }}-${{ inputs.kernel_branch }}_${{ inputs.ksu_type }}_$(date -u +"%Y%m%d_%H%M")"
@@ -564,6 +566,7 @@ jobs:
         with:
          name: kernel
          path: |
+          *.ko
           *.zip
           Image
           build.log
