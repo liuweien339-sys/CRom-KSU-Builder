@@ -93,8 +93,8 @@ jobs:
          cp ${GITHUB_WORKSPACE}/gauguin/vendor/xiaomi/gauguin.config ${GITHUB_WORKSPACE}/gauguin/arch/arm64/configs/vendor/xiaomi/
          cp -r ${GITHUB_WORKSPACE}/gauguin/qcom/camera ${GITHUB_WORKSPACE}/gauguin/arch/arm64/boot/dts/qcom/
          cp -r ${GITHUB_WORKSPACE}/gauguin/qcom/display ${GITHUB_WORKSPACE}/gauguin/arch/arm64/boot/dts/qcom/
-         rm -f ${GITHUB_WORKSPACE}/gauguin/qcom/camera 
-         rm -f ${GITHUB_WORKSPACE}/gauguin/qcom/display
+         rm -rf ${GITHUB_WORKSPACE}/gauguin/qcom/camera 
+         rm -rf ${GITHUB_WORKSPACE}/gauguin/qcom/display
          cp ${GITHUB_WORKSPACE}/gauguin/qcom/* ${GITHUB_WORKSPACE}/gauguin/arch/arm64/boot/dts/qcom/
          
       - name: Make Kernel Configs
