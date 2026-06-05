@@ -84,6 +84,7 @@ jobs:
          
       - name: MSM Move 
         run: |
+         cd ${GITHUB_WORKSPACE}/gauguin/
          mkdir ${GITHUB_WORKSPACE}/gauguin/arch/arm64/configs/vendor
          mkdir ${GITHUB_WORKSPACE}/gauguin/arch/arm64/configs/vendor/xiaomi
          cp ${GITHUB_WORKSPACE}/msm/qcom.zip ${GITHUB_WORKSPACE}/gauguin/
