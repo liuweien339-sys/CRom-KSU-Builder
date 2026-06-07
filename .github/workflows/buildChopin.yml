@@ -252,7 +252,7 @@ jobs:
           
       - name: Clone Kernel Source
         run: |
-        git clone https://github.com/ChopinKernels/kernel_xiaomi_chopin_android_S.git --depth=1
+          git clone https://github.com/ChopinKernels/kernel_xiaomi_chopin_android_S.git --depth=1
         
       - name: Download AOSP Clang
         run: |
