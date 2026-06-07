@@ -15,7 +15,7 @@ on:
         description: "SOC: Type your soc"
         required: true
         type: string
-        default: "gauguin"
+        default: "chopin"
 
       clang_version:
         description: "Clang-Version: Select the clang version of ur kernel"
@@ -252,7 +252,7 @@ jobs:
           
       - name: Clone Kernel Source
         run: |
-          git clone https://github.com/ChopinKernels/kernel_xiaomi_chopin_android_S.git --depth=1
+          git clone https://github.com/ChopinKernels/kernel_xiaomi_chopin_android_S.git --depth=1 chopin
         
       - name: Download AOSP Clang
         run: |
