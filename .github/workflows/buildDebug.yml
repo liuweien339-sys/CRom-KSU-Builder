@@ -371,7 +371,7 @@ jobs:
             patch -p1 < patch2.patch
 
             cp ${GITHUB_WORKSPACE}/configs/kernelDebug.config arch/arm64/configs/vendor/addon.config
-            cp ${GITHUB_WORKSPACE}/fixtphook/Kbuild drivers/kernelsu/
+            # cp ${GITHUB_WORKSPACE}/fixtphook/Kbuild drivers/kernelsu/
             cp ${GITHUB_WORKSPACE}/welcome/version.c init/
           fi
               curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_${{ inputs.susfs-nongki }}.patch || exit 1
