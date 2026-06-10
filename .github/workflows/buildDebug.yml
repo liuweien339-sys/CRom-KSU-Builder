@@ -212,6 +212,7 @@ jobs:
           cpio \
           gcc-aarch64-linux-gnu \
           linux-tools-common
+          
       - name: Save options
         run: |
           echo "brand:${{ inputs.brand }}"
@@ -252,28 +253,8 @@ jobs:
           
       - name: Clone Kernel Source
         run: |
-          echo "⚠You Are Using The Debug Build"
-          if [[ "${{ inputs.kernel_source }}" == "Manual-Type" ]]; then
-
-            git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source_manual }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}.git ${{ inputs.soc }} || exit 1
-
-            if [[ "${{ inputs.has_modules_repo }}" == "true" ]]; then
-
-              git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source_manual }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}-modules.git ${{ inputs.soc }}-modules || exit 1
-
-            fi
-
-          else
-
-            git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}.git ${{ inputs.soc }} || exit 1
-
-            if [[ "${{ inputs.has_modules_repo }}" == "true" ]]; then
-
-                git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}-modules.git ${{ inputs.soc }}-modules || exit 1
-
-            fi
-
-          fi
+          git clone https://github.com/liuweien339-sys/android_WeienKernel_xiaomi_gauguin.git gauguin --depth=1
+          
       - name: Download AOSP Clang
         run: |
           case "${{ inputs.clang_version }}" in
@@ -367,12 +348,10 @@ jobs:
             # Why there is no 01.fix_kernel_panic_in_xt_qtaguid.patch? Because I cant find net/netfilter/xt_qtaguid.c in my k4.14 4.19 5.4
             # 为什么没有01.fix_kernel_panic_in_xt_qtaguid.patch? 在我用的4.14 4.19 5.4内无此文件
 
-            curl -Lo patch2.patch https://raw.githubusercontent.com/ravindu644/Droidspaces-OSS/refs/heads/main/Documentation/resources/kernel-patches/non-GKI/02.fix_restore%20cgroup%20file%20prefix%20handling%20.patch || exit 1
+            curl -Lo patch2.patch https://raw.githubusercontent.com/ravindu644/Droidspaces-OSS/refs/heads/main/Documentation/resources/kernel-patches/non-GKI/02.fix_restore%20cgroup%20file%20prefix%20handling%20.patch || true
             patch -p1 < patch2.patch
 
-            cp ${GITHUB_WORKSPACE}/configs/kernelDebug.config arch/arm64/configs/vendor/addon.config
             cp ${GITHUB_WORKSPACE}/fixtphook/Kbuild drivers/kernelsu/
-            cp ${GITHUB_WORKSPACE}/welcome/version.c init/
           fi
               curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_${{ inputs.susfs-nongki }}.patch || exit 1
               curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
@@ -400,12 +379,6 @@ jobs:
               sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
 
           touch ./.scmversion
-
-      - name: Fix KVM
-        run: |
-         git clone https://github.com/liuweien339-sys/fix-gauguin-los23.2-kvm-bug fixkvm
-         chmod +x ${GITHUB_WORKSPACE}/fixkvm/fixkvm.sh
-         bash ${GITHUB_WORKSPACE}/fixkvm/fixkvm.sh
          
       - name: Make Kernel Configs
         run: |
