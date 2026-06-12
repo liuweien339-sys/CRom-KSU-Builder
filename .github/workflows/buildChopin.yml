@@ -350,6 +350,12 @@ jobs:
               
               sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
               
+              sed -i '/#define.*MTK_DISP_RECOVERY_H/a struct drm_crtc;' drivers/gpu/drm/mediatek/mtk_disp_recovery.h
+
+              sed -i 's/inline void blk_crypto_flock/extern void blk_crypto_flock/' include/linux/blk-crypto.h
+
+              sed -i 's/inline void ksm_flock/extern void ksm_flock/' include/linux/keyslot-manager.h
+
           touch ./.scmversion
          
       - name: Make Kernel Configs
