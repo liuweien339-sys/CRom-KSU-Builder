@@ -347,7 +347,7 @@ jobs:
               sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
               sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
 
-              # 不得不说这小米代码bug真多
+              # 不得不说这小米MTK代码bug真多
               sed -i 's/static char \*hw_item_dump()/static char *hw_item_dump(void)/' arch/arm64/kernel/hwconf_manager.c
               sed -i '/#define.*MTK_DISP_RECOVERY_H/a struct drm_crtc;' drivers/gpu/drm/mediatek/mtk_disp_recovery.h
               sed -i 's/inline void blk_crypto_flock/extern void blk_crypto_flock/' include/linux/blk-crypto.h
@@ -357,6 +357,8 @@ jobs:
               sed -i '507s/ARRAY_SIZE(count_ack)/ARRAY_SIZE(count_ack) * sizeof(int)/' drivers/misc/mediatek/base/power/cm_mgr_v1/mtk_cm_mgr.c
               sed -i '522s/ARRAY_SIZE(count_ack)/ARRAY_SIZE(max_load) * sizeof(int)/' drivers/misc/mediatek/base/power/cm_mgr_v1/mtk_cm_mgr.c
               sed -i '408s/= {0};/= {};/' drivers/nfc/pn553.c
+              sed -i '3941s/kstrtoint(/\(void\)kstrtoint(/' drivers/power/supply/mediatek/battery_ares/mtk_battery.c
+              sed -i '705s/chr_err/break; chr_err/' drivers/power/supply/mediatek/charger_ares/mtk_switch_charging.c
               
           touch ./.scmversion
          
