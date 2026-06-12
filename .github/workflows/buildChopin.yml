@@ -345,17 +345,19 @@ jobs:
             cp ${GITHUB_WORKSPACE}/configs/chopinAddon.config arch/arm64/configs/addon.config
 
               sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
-
-              sed -i 's/static char \*hw_item_dump()/static char *hw_item_dump(void)/' arch/arm64/kernel/hwconf_manager.c
-              
               sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
-              
+
+              # 不得不说这小米代码bug真多
+              sed -i 's/static char \*hw_item_dump()/static char *hw_item_dump(void)/' arch/arm64/kernel/hwconf_manager.c
               sed -i '/#define.*MTK_DISP_RECOVERY_H/a struct drm_crtc;' drivers/gpu/drm/mediatek/mtk_disp_recovery.h
-
               sed -i 's/inline void blk_crypto_flock/extern void blk_crypto_flock/' include/linux/blk-crypto.h
-
               sed -i 's/inline void ksm_flock/extern void ksm_flock/' include/linux/keyslot-manager.h
-
+              sed -i '47s/const int const/const int/' sound/soc/mediatek/mt6885/mt6885-misc-control.c
+              sed -i '73s/const int const/const int/' sound/soc/mediatek/mt6885/mt6885-misc-control.c
+              sed -i '507s/ARRAY_SIZE(count_ack)/ARRAY_SIZE(count_ack) * sizeof(int)/' drivers/misc/mediatek/base/power/cm_mgr_v1/mtk_cm_mgr.c
+              sed -i '522s/ARRAY_SIZE(count_ack)/ARRAY_SIZE(max_load) * sizeof(int)/' drivers/misc/mediatek/base/power/cm_mgr_v1/mtk_cm_mgr.c
+              sed -i '408s/= {0};/= {};/' drivers/nfc/pn553.c
+              
           touch ./.scmversion
          
       - name: Make Kernel Configs
