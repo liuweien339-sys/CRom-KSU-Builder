@@ -253,7 +253,7 @@ jobs:
           
       - name: Clone Kernel Source
         run: |
-          https://github.com/Tkpointz/android_kernel_aresin --depth=1 -b T gauguin
+          git clone https://github.com/Tkpointz/android_kernel_aresin --depth=1 -b T gauguin
           
       - name: Download AOSP Clang
         run: |
