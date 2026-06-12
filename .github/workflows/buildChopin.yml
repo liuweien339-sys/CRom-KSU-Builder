@@ -346,6 +346,8 @@ jobs:
 
               sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
 
+              sed -i 's/static char \*hw_item_dump()/static char *hw_item_dump(void)/' arch/arm64/kernel/hwconf_manager.c
+              
               sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
               
           touch ./.scmversion
