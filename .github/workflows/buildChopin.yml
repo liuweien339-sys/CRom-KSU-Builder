@@ -359,6 +359,8 @@ jobs:
               sed -i '408s/= {0};/= {};/' drivers/nfc/pn553.c
               sed -i '3941s/kstrtoint(/\(void\)kstrtoint(/' drivers/power/supply/mediatek/battery_ares/mtk_battery.c
               sed -i '705s/chr_err/break; chr_err/' drivers/power/supply/mediatek/charger_ares/mtk_switch_charging.c
+              sed -i 's/strncpy(cam, "CAM_\([ABC]\)", sizeof("CAM_\1"));/strcpy(cam, "CAM_\1");/g' drivers/misc/mediatek/cameraisp/src/mt6885/camera_isp.c
+              sed -i '1359s/chr_err/break; chr_err/' ../drivers/power/supply/mediatek/charger_ares/mtk_switch_charging2.c
               
           touch ./.scmversion
          
