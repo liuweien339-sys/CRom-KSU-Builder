@@ -347,7 +347,7 @@ jobs:
               sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
               sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
 
-              # 不得不说这小米MTK代码bug真多
+              # 不得不说这小米MTK代码bug真多 不是bro这么多?
               sed -i 's/static char \*hw_item_dump()/static char *hw_item_dump(void)/' arch/arm64/kernel/hwconf_manager.c
               sed -i '/#define.*MTK_DISP_RECOVERY_H/a struct drm_crtc;' drivers/gpu/drm/mediatek/mtk_disp_recovery.h
               sed -i 's/inline void blk_crypto_flock/extern void blk_crypto_flock/' include/linux/blk-crypto.h
@@ -361,6 +361,9 @@ jobs:
               sed -i '705s/chr_err/break; chr_err/' drivers/power/supply/mediatek/charger_ares/mtk_switch_charging.c
               sed -i 's/strncpy(cam, "CAM_\([ABC]\)", sizeof("CAM_\1"));/strcpy(cam, "CAM_\1");/g' drivers/misc/mediatek/cameraisp/src/mt6885/camera_isp.c
               sed -i '1359s/chr_err/break; chr_err/' drivers/power/supply/mediatek/charger_ares/mtk_switch_charging2.c
+              sed -i 's/det->ctrl_id < NR_EEM_DET/(int)det->ctrl_id < NR_EEM_DET/g' drivers/misc/mediatek/base/power/eem_v2/mt6893/mtk_eem.c
+              sed -i 's/static const enum power_supply_type const/static const enum power_supply_type/g' drivers/power/supply/mediatek/charger_ares/xmusb350.c
+              sed -i '1501s/.*/&\n\trc = 0;/' drivers/power/supply/mediatek/charger_ares/xmusb350.c
               
           touch ./.scmversion
          
