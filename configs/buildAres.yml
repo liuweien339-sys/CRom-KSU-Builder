@@ -1,0 +1,547 @@
+name: Compile Kernel (ares)
+
+on:
+  workflow_dispatch:
+    inputs:
+      brand:
+        description: "Brand: Select your brand"
+        required: true
+        type: choice
+        default: xiaomi
+        options:
+          - xiaomi
+
+      soc:
+        description: "SOC: Type your soc"
+        required: true
+        type: string
+        default: "gauguin"
+
+      clang_version:
+        description: "Clang-Version: Select the clang version of ur kernel"
+        required: true
+        type: choice
+        default: clang-r450784d
+        options:
+          - clang-r416183b1 #lineage-19.1 in android12-qpr3-release
+          - clang-r450784d  #lineage-20.0 in android13-qpr3-release
+          - clang-r487747c  #lineage-21.0 in android14-qpr3-release
+          - clang-r536225   #lineage-22.2 in android15-qpr2-release
+          - clang-r547379   #lineage-23.0 in android16-qpr3-release
+          - clang-r563880c  #lineage-23.2 in android16-qpr3-release
+          
+      kernel_source:
+        description: "Kernel-Source: Kernel repo's org/user on github"
+        required: true
+        type: choice
+        default: LineageOS
+        options:
+          - Manual-Type
+          - LineageOS
+          - crdroidandroid
+          - OnePlus12R-development
+          - YAAP
+
+      kernel_source_manual:
+        description: "Kernel-Source-Manual: If u selected Manual-Type in previous options, manually type ur repo's org/user on github here."
+        required: false
+        type: string
+        default: ""
+
+      kernel_source_format:
+        description: "Source-Format: Select ur kernel source format(1 for los etc. 2 for yaap etc.)(keep default if u dont know)"
+        required: true
+        type: choice
+        default: android_kernel
+        options:
+          - android_kernel
+          - kernel
+
+      kernel_branch:
+        description: "Kernel-Branch: such as lineage-23.2 sixteen-qpr1 etc."
+        required: true
+        type: string
+        default: "lineage-23.2"
+        
+      kernel_configs:
+        description: "Kernel-Configs: Select ur kernel configs(Use Manual-Type to custom it)"
+        required: true
+        type: choice
+        default: Manual-Type
+        options:
+          - Manual-Type
+          - oplus-sm8150-los
+          - oplus-sm8150-yaap
+          - oplus-sm8250-los
+          - oplus-sm8350-los
+          - oplus-sm8550-los
+          - oplus-sm8650-los
+
+      kernel_configs_manual:
+        description: "Kernel-Configs-Manual: If u selected Manual-Type in previous options, manually type ur kernel configs here."
+        required: false
+        type: string
+        default: "ares_user_defconfig"
+
+      ksu_type:
+        description: "KSU: KernelSU Version"
+        required: true
+        type: choice
+        default: "ReSukiSU-with-susfs"
+        options:
+          - None
+          - Official-KernelSU
+          - KernelSU-Next
+          - KernelSU-Next-with-susfs
+          - KowSU
+          - KernelSU-by-xx
+          - ReSukiSU
+          - ReSukiSU-with-susfs
+          - SukiSUUltra NonGKI
+          - SukiSUUltra-Plus NonGKI
+      susfs-gki:
+        description: "SUSFS-GKI: select ur kernel version(for gki)"
+        required: true
+        type: choice
+        default: None
+        options:
+          - None
+          - android12-5.10
+          - android13-5.10
+          - android13-5.15
+          - android14-5.15
+          - android14-6.1
+          - android15-6.6
+          - android16-6.12
+
+      susfs-nongki:
+        description: "SUSFS-NONGKI: select ur kernel version(for nongki)"
+        required: true
+        type: choice
+        default: 4.14
+        options:
+          - None
+          - 4.9
+          - 4.14
+          - 4.19
+          - 5.4
+
+      droidspaces:
+        description: "DroidSpaces: Enable DroidSpaces"
+        required: true
+        type: choice
+        default: 3.18-4.19
+        options:
+          - None
+          - 5.4-6.6
+          - 3.18-4.19
+
+      has_modules_repo:
+        description: "Has-Modules-Repo: Enable this ur kernel has modules repo"
+        required: true
+        type: boolean
+        default: false
+
+      enable_tmpfs-xattr:
+        description: "TMPFS_XATTR: U can enable this if ur kernel has no CONFIG_TMPFS_XATTR=y"
+        required: true
+        type: boolean
+        default: false
+
+      enable_gcc:
+        description: "Enable-GCC: Enable the GCC support"
+        required: true
+        type: boolean
+        default: true
+      
+      enable_gcc_32bits:
+        description: "Enable-GCC-32Bits: Enable the 32Bits GCC support"
+        required: true
+        type: boolean
+        default: false
+
+      fuck_modules_sig_protect:
+        description: "Fuck-Modules-Sig-Protect: FUCK MODULES SIG Protectttt"
+        required: true
+        type: boolean
+        default: false
+
+      fuck_werror:
+        description: "Fuck-Werror: FUCK WERROR IN CONFIGS"
+        required: true
+        type: boolean
+        default: false
+
+      enable_my_own_susfs_patch:
+        description: "fuck susfs: fuck susfs"
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  Kernel_CI:
+    env:
+        GH_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+      checks: read
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup SWAP
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 16
+          
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+          bc bison flex \
+          libssl-dev \
+          libelf-dev \
+          libdw-dev \
+          build-essential \
+          lz4 \
+          git \
+          python3 \
+          curl \
+          dwarves \
+          cpio \
+          gcc-aarch64-linux-gnu \
+          linux-tools-common
+          
+      - name: Save options
+        run: |
+          echo "brand:${{ inputs.brand }}"
+          echo "soc:${{ inputs.soc }}"
+          echo "clang_version:${{ inputs.clang_version }}"
+          echo "kernel_source:${{ inputs.kernel_source }}"
+          echo "kernel_source_manual:${{ inputs.kernel_source_manual }}"
+          echo "kernel_source_format:${{ inputs.kernel_source_format }}"
+          echo "ksu_type:${{ inputs.ksu_type }}"
+          echo "susfs-gki:${{ inputs.susfs-gki }}"
+          echo "susfs-nongki:${{ inputs.susfs-nongki }}"
+          echo "droidspaces:${{ inputs.droidspaces }}"
+          echo "has_modules_repo:${{ inputs.has_modules_repo }}"
+          echo "enable_tmpfs-xattr:${{ inputs.enable_tmpfs-xattr }}"
+          echo "enable_gcc:${{ inputs.enable_gcc }}"
+          echo "enable_gcc_32bits:${{ inputs.enable_gcc_32bits }}"
+          echo "fuck_modules_sig_protect:${{ inputs.fuck_modules_sig_protect }}"
+          echo "fuck_werror:${{ inputs.fuck_werror }}"
+          echo "enable_my_own_susfs_patch:${{ inputs.enable_my_own_susfs_patch }}"
+
+          echo "brand:${{ inputs.brand }}" >> options.txt
+          echo "soc:${{ inputs.soc }}" >> options.txt
+          echo "clang_version:${{ inputs.clang_version }}" >> options.txt
+          echo "kernel_source:${{ inputs.kernel_source }}" >> options.txt
+          echo "kernel_source_manual:${{ inputs.kernel_source_manual }}" >> options.txt
+          echo "kernel_source_format:${{ inputs.kernel_source_format }}" >> options.txt
+          echo "ksu_type:${{ inputs.ksu_type }}" >> options.txt
+          echo "susfs-gki:${{ inputs.susfs-gki }}" >> options.txt
+          echo "susfs-nongki:${{ inputs.susfs-nongki }}" >> options.txt
+          echo "droidspaces:${{ inputs.droidspaces }}" >> options.txt
+          echo "has_modules_repo:${{ inputs.has_modules_repo }}" >> options.txt
+          echo "enable_tmpfs-xattr:${{ inputs.enable_tmpfs-xattr }}" >> options.txt
+          echo "enable_gcc:${{ inputs.enable_gcc }}" >> options.txt
+          echo "enable_gcc_32bits:${{ inputs.enable_gcc_32bits }}" >> options.txt
+          echo "fuck_modules_sig_protect:${{ inputs.fuck_modules_sig_protect }}" >> options.txt
+          echo "fuck_werror:${{ inputs.fuck_werror }}" >> options.txt
+          echo "enable_my_own_susfs_patch:${{ inputs.enable_my_own_susfs_patch }}" >> options.txt
+          
+      - name: Clone Kernel Source
+        run: |
+          https://github.com/Tkpointz/android_kernel_aresin --depth=1 -b T gauguin
+          
+      - name: Download AOSP Clang
+        run: |
+          case "${{ inputs.clang_version }}" in
+
+            "clang-r416183b1")
+              curl -LO https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android12-qpr3-release/clang-r416183b1.tar.gz
+              ;;
+
+            "clang-r450784d")
+              curl -LO https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android13-qpr3-release/clang-r450784d.tar.gz
+              ;;
+
+            "clang-r487747c")
+              curl -LO https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android14-qpr3-release/clang-r487747c.tar.gz
+              ;;
+
+            "clang-r536225")
+              curl -LO https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android15-qpr2-release/clang-r536225.tar.gz
+              ;;
+
+            "clang-r547379")
+              curl -LO https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android16-qpr2-release/clang-r547379.tar.gz
+              ;;
+              
+            "clang-r563880c")
+              curl -LO https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android16-qpr2-release/clang-r563880c.tar.gz
+              ;;
+              
+          esac
+
+          mkdir -p toolchains/${{ inputs.clang_version }}
+          
+          tar -xf "${{ inputs.clang_version }}.tar.gz" -C "toolchains/${{ inputs.clang_version }}" || exit 1
+
+          if [[ "${{ inputs.enable_gcc_32bits }}" == "true" ]]; then
+
+            curl -LO https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/heads/android12L-release.tar.gz
+            mkdir -p toolchains/arm-linux-androideabi
+            tar -xf android12L-release.tar.gz -C toolchains/arm-linux-androideabi
+         
+          fi
+
+
+      - name: Include goodies
+        run: |
+          cd ${{ inputs.soc }} || exit 1
+          
+          case "${{ inputs.ksu_type }}" in
+
+            "None")
+              ;;
+
+            "Official-KernelSU")
+              curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main || exit 1
+              ;;
+
+            "KowSU")
+              curl -LSs "https://raw.githubusercontent.com/KOWX712/KernelSU/main/kernel/setup.sh" | bash -s master || exit 1
+              ;;
+
+            "KernelSU-by-xx")
+              curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/refs/heads/master/kernel/setup.sh" | bash -s master || exit 1
+              ;;
+
+            "KernelSU-Next")
+              curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s dev || exit 1
+              ;;
+
+            "KernelSU-Next-with-susfs")
+              curl -LSs "https://raw.githubusercontent.com/pershoot/KernelSU-Next/refs/heads/dev-susfs/kernel/setup.sh" | bash -s dev-susfs || exit 1
+              ;;
+
+            "ReSukiSU"|"ReSukiSU-with-susfs")
+              curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/dev/kernel/setup.sh" | bash -s dev
+              ;;
+
+            "SukiSUUltra NonGKI")
+              curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s main || exit 1
+              ;;
+
+            "SukiSUUltra Plus NonGKI")
+               curl -LSs "https://raw.githubusercontent.com/ailixiyaX/SukiSU-Ultra-Plus/main/kernel/setup.sh" | bash -s nongki || exit 1
+              ;;
+          esac
+
+          if [[ "${{ inputs.droidspaces }}" == "5.4-6.6" ]]; then
+            echo "Unsupported"
+            
+          elif [[ "${{ inputs.droidspaces }}" == "3.18-4.19" ]]; then
+
+            # Why there is no 01.fix_kernel_panic_in_xt_qtaguid.patch? Because I cant find net/netfilter/xt_qtaguid.c in my k4.14 4.19 5.4
+            # 为什么没有01.fix_kernel_panic_in_xt_qtaguid.patch? 在我用的4.14 4.19 5.4内无此文件
+
+            curl -Lo patch2.patch https://raw.githubusercontent.com/ravindu644/Droidspaces-OSS/refs/heads/main/Documentation/resources/kernel-patches/non-GKI/02.fix_restore%20cgroup%20file%20prefix%20handling%20.patch || true
+            patch -p1 < patch2.patch
+
+            cp ${GITHUB_WORKSPACE}/fixtphook/Kbuild drivers/kernelsu/
+            cp ${GITHUB_WORKSPACE}/config/aresAddon.config arch/arm64/configs/
+          fi
+              curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_${{ inputs.susfs-nongki }}.patch || exit 1
+              curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
+
+              patch -p1 < susfs.patch || true
+              bash inline.sh || true
+              
+              sed -i '/^#include <linux\/init.h>/a\
+              #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT\
+              #include <linux/susfs_def.h>\
+              \
+              extern bool susfs_is_current_ksu_domain(void);\
+              extern struct static_key_true susfs_is_sdcard_android_data_not_decrypted;\
+              \
+              #define CL_COPY_MNT_NS 0x00000100\
+              #define VFSMOUNT_MNT_FLAGS_KSU_UNSHARED_MNT 0x80000000\
+              #define DEFAULT_KSU_MNT_ID 500000\
+              #define DEFAULT_KSU_MNT_GROUP_ID 5000\
+              #endif' fs/namespace.c
+
+              sed -i 's/\.handle_inode_event/.handle_event/' drivers/kernelsu/manager/pkg_observer.c
+
+              sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
+
+              sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
+
+          touch ./.scmversion
+         
+      - name: Make Kernel Configs
+        run: |
+          CLANG_ROOT="${GITHUB_WORKSPACE}/toolchains/${{ inputs.clang_version }}/bin"
+          export PATH="${CLANG_ROOT}:$PATH"
+          export ARCH=arm64
+          export SUBARCH=arm64
+          export LLVM=1
+          export LLVM_IAS=1
+
+          if [[ "${{ inputs.enable_gcc }}" == "true" ]]; then
+
+            export CROSS_COMPILE=aarch64-linux-gnu-
+
+          fi
+
+          if [[ "${{ inputs.enable_gcc_32bits }}" == "true" ]]; then
+            
+            export CROSS_COMPILE_ARM32=${GITHUB_WORKSPACE}/toolchains/arm-linux-androideabi/bin/arm-linux-androideabi-
+          
+          fi
+          
+          if [[ "${{ inputs.droidspaces }}" != "None" ]]; then
+            export ADDON_CONFIG="addon.config"
+          else
+            export ADDON_CONFIG=""
+          fi
+
+
+          cd ${{ inputs.soc }} || exit 1
+
+          if [[ "${{ inputs.kernel_configs }}" == "Manual-Type" ]]; then
+
+            if [[ -z "${{ inputs.kernel_configs_manual }}" ]]; then
+
+              echo "U didnt type configs"
+              exit 1
+
+            fi
+
+            make O=out ${{ inputs.kernel_configs_manual }} addon.config
+
+          else
+
+            case "${{ inputs.kernel_configs }}" in
+
+              "oplus-sm8150-los")
+              echo "Unsupported"
+              ;;
+
+              "oplus-sm8150-yaap")
+              echo "Unsupported"
+              ;;
+
+              "oplus-sm8250-los")
+              echo "Unsupported"
+              ;;
+
+              "oplus-sm8350-los")
+              echo "Unsupported"
+              ;;
+
+              "oplus-sm8550-los")
+              echo "Unsupported"
+              ;;
+
+              "oplus-sm8650-los")
+              echo "Unsupported"
+              ;;
+
+            esac
+
+          fi
+
+          if [[ "${{ inputs.enable_tmpfs-xattr }}" == "true" ]]; then
+
+            sed -i '/CONFIG_TMPFS_XATTR/d' out/.config
+            echo "CONFIG_TMPFS_XATTR=y" >> out/.config
+
+          fi
+
+          if [[ "${{ inputs.fuck_werror }}" == "true" ]]; then
+
+            sed -i '/CONFIG_CC_WERROR/d' out/.config
+            sed -i '/CONFIG_WERROR/d' out/.config
+            echo "CONFIG_CC_WERROR=n" >> out/.config
+            echo "CONFIG_WERROR=n" >> out/.config
+
+          fi
+
+          if [[ "${{ inputs.fuck_modules_sig_protect }}" == "true" ]]; then
+
+            sed -i '/CONFIG_MODULE_SIG_PROTECT/d' out/.config
+            echo "CONFIG_MODULE_SIG_PROTECT=n" >> out/.config
+
+          fi
+
+          if [[ "${{ inputs.ksu_type }}" == "KernelSU-by-xx" ]]; then
+
+            echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> out/.config
+
+          fi
+
+          if [[ "${{ inputs.ksu_type }}" == *susfs* ]]; then
+
+            echo "CONFIG_KSU_SUSFS=y" >> out/.config
+            echo "CONFIG_KSU_SUSFS_SUS_PATH=y" >> out/.config
+            echo "CONFIG_KSU_SUSFS_SUS_MOUNT=y" >> out/.config
+            echo "CONFIG_KSU_SUSFS_SUS_KSTAT=y" >> out/.config
+            echo "CONFIG_KSU_SUSFS_SPOOF_UNAME=y" >> out/.config
+            echo "CONFIG_KSU_SUSFS_ENABLE_LOG=y" >> out/.config
+            echo "CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y" >> out/.config
+            echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> out/.config
+            echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> out/.config
+            echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> out/.config
+          fi
+          
+      - name: Build Kernel Image
+        run: |
+          CLANG_ROOT="${GITHUB_WORKSPACE}/toolchains/${{ inputs.clang_version }}/bin"
+          export PATH="${CLANG_ROOT}:$PATH"
+          export ARCH=arm64
+          export SUBARCH=arm64
+          export LLVM=1
+          export LLVM_IAS=1
+
+          if [[ "${{ inputs.enable_gcc }}" == "true" ]]; then
+
+            export CROSS_COMPILE=aarch64-linux-gnu-
+            
+          fi
+
+          if [[ "${{ inputs.enable_gcc_32bits }}" == "true" ]]; then
+            
+            export CROSS_COMPILE_ARM32=${GITHUB_WORKSPACE}/toolchains/arm-linux-androideabi/bin/arm-linux-androideabi-
+          
+          fi
+
+          cd ${{ inputs.soc }} || exit 1
+          
+          make -j6 O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
+          
+      - name: Make AnyKernel3
+        run: |
+          ZIP_NAME="${{ inputs.soc }}_${{ inputs.kernel_source }}-${{ inputs.kernel_branch }}_${{ inputs.ksu_type }}_$(date -u +"%Y%m%d_%H%M")"
+          git clone https://github.com/Kernel-SU/AnyKernel3.git
+          cp ${{ inputs.soc }}/out/arch/arm64/boot/Image ./Image
+          cd AnyKernel3 || exit 1
+
+          sed -i "s|ksu_supported=false|ksu_supported=true|" anykernel.sh
+
+          zip -r9 ../"${ZIP_NAME}.zip" * -x .git
+
+      - name: Upload to GitHub Actions Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+         name: kernel
+         path: |
+          *.ko
+          *.zip
+          Image
+          build.log
+          options.txt
+         if-no-files-found: error
+         compression-level: 6
