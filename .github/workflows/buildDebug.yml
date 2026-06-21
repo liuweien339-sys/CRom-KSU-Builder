@@ -355,6 +355,8 @@ jobs:
           fi
               curl -Lo susfs.patch https://gitlab.com/simonpunk/susfs4ksu/-/raw/master/kernel_patches/50_add_susfs_in_kernel-4.19.patch || exit 1
               curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
+              curl -Li https://gitlab.com/simonpunk/susfs4ksu/-/raw/master/kernel_patches/include/linux/susfs.h || exit 1
+              cp susfs.h include/linux/
 
               patch -p1 < susfs.patch || true
               bash inline.sh || true
