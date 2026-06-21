@@ -344,13 +344,7 @@ jobs:
             echo "Unsupported"
             
           elif [[ "${{ inputs.droidspaces }}" == "3.18-4.19" ]]; then
-
-            # Why there is no 01.fix_kernel_panic_in_xt_qtaguid.patch? Because I cant find net/netfilter/xt_qtaguid.c in my k4.14 4.19 5.4
-            # 为什么没有01.fix_kernel_panic_in_xt_qtaguid.patch? 在我用的4.14 4.19 5.4内无此文件
-
-            curl -Lo patch2.patch https://raw.githubusercontent.com/ravindu644/Droidspaces-OSS/refs/heads/main/Documentation/resources/kernel-patches/non-GKI/02.fix_restore%20cgroup%20file%20prefix%20handling%20.patch || true
-            patch -p1 < patch2.patch
-
+          
             cp ${GITHUB_WORKSPACE}/fixtphook/Kbuild drivers/kernelsu/
           fi
               curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_4.19.patch || exit 1
@@ -373,10 +367,6 @@ jobs:
               #endif' fs/namespace.c
 
               sed -i 's/\.handle_inode_event/.handle_event/' drivers/kernelsu/manager/pkg_observer.c
-
-              sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
-
-              sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
 
               sed -i 's/\.mmap_sem\s*=\s*__RWSEM_INITIALIZER(efi_mm\.mmap_sem)/.mmap_lock = __RWSEM_INITIALIZER(efi_mm.mmap_lock)/' drivers/firmware/efi/efi.c
 
