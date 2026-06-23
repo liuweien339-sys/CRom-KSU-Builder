@@ -283,9 +283,10 @@ jobs:
               wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android16-qpr2-release/clang-r563880c.tar.gz
               ;;
               
-            "clang-r584947")
+            "clang-r584948")
               wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android17-release/clang-r584948.tar.gz
               ;;
+              
           esac
 
           mkdir -p toolchains/${{ inputs.clang_version }}
