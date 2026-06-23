@@ -210,7 +210,7 @@ jobs:
           curl \
           dwarves \
           cpio \
-          gcc-aarch64-linux-gnu \
+          gcc-9-aarch64-linux-gnu \
           linux-tools-common
       - name: Save options
         run: |
@@ -374,7 +374,7 @@ jobs:
           export ARCH=arm64
           export SUBARCH=arm64
           export LLVM=1
-          export LLVM_IAS=1
+          export LLVM_IAS=0
 
           if [[ "${{ inputs.enable_gcc }}" == "true" ]]; then
 
@@ -490,7 +490,7 @@ jobs:
           export ARCH=arm64
           export SUBARCH=arm64
           export LLVM=1
-          export LLVM_IAS=1
+          export LLVM_IAS=0
 
           if [[ "${{ inputs.enable_gcc }}" == "true" ]]; then
 
