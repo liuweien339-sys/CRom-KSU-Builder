@@ -81,7 +81,7 @@ on:
         description: "Kernel-Configs-Manual: If u selected Manual-Type in previous options, manually type ur kernel configs here."
         required: false
         type: string
-        default: "chopin_userkvm_defconfig"
+        default: "chopin_user_defconfig"
 
       ksu_type:
         description: "KSU: KernelSU Version"
