@@ -21,7 +21,7 @@ on:
         description: "Clang-Version: Select the clang version of ur kernel"
         required: true
         type: choice
-        default: clang-r416183b1
+        default: clang-r450784d
         options:
           - clang-r416183b1 #lineage-19.1 in android12-qpr3-release
           - clang-r450784d  #lineage-20.0 in android13-qpr3-release
@@ -252,7 +252,7 @@ jobs:
           
       - name: Clone Kernel Source
         run: |
-          git clone https://github.com/ChopinKernels/kernel_xiaomi_chopin_android_S.git --depth=1 chopin
+          git clone https://github.com/ChopinKernels/android_kernel_chopin_android_T.git --depth=1 chopin
         
       - name: Download AOSP Clang
         run: |
