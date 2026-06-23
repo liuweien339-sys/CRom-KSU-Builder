@@ -21,7 +21,7 @@ on:
         description: "Clang-Version: Select the clang version of ur kernel"
         required: true
         type: choice
-        default: clang-r563880c
+        default: clang-r584948
         options:
           - clang-r416183b1 #lineage-19.1 in android12-qpr3-release
           - clang-r450784d  #lineage-20.0 in android13-qpr3-release
@@ -29,7 +29,7 @@ on:
           - clang-r536225   #lineage-22.2 in android15-qpr2-release
           - clang-r547379   #lineage-23.0 in android16-qpr3-release
           - clang-r563880c  #lineage-23.2 in android16-qpr3-release
-          
+          - clang-r584948   #Unrelease lineage-24.0 in androird17-qpr0-release
       kernel_source:
         description: "Kernel-Source: Kernel repo's org/user on github"
         required: true
@@ -283,6 +283,9 @@ jobs:
               wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android16-qpr2-release/clang-r563880c.tar.gz
               ;;
               
+            "clang-r584947")
+              wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android17-release/clang-r584948.tar.gz
+              ;;
           esac
 
           mkdir -p toolchains/${{ inputs.clang_version }}
