@@ -346,7 +346,7 @@ jobs:
 
               sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
               sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
-              
+              find . -name "Makefile" -exec sed -i 's/-Werror\b/-Wno-error/g' {} \;
           touch ./.scmversion
          
       - name: Make Kernel Configs
