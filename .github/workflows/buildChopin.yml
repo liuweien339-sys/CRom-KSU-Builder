@@ -87,7 +87,7 @@ on:
         description: "KSU: KernelSU Version"
         required: true
         type: choice
-        default: "KernelSU-by-xx"
+        default: "ReSukiSU-with-susfs"
         options:
           - None
           - Official-KernelSU
@@ -118,7 +118,7 @@ on:
         description: "SUSFS-NONGKI: select ur kernel version(for nongki)"
         required: true
         type: choice
-        default: 4.19
+        default: 4.14
         options:
           - None
           - 4.9
@@ -188,7 +188,7 @@ jobs:
       actions: read
       checks: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Setup SWAP
         uses: pierotofy/set-swap-space@master
@@ -500,7 +500,7 @@ jobs:
           zip -r9 ../"${ZIP_NAME}.zip" * -x .git
 
       - name: Upload to GitHub Actions Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
          name: kernel
          path: |
