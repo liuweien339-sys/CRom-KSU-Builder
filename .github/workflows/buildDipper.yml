@@ -87,7 +87,7 @@ on:
         description: "KSU: KernelSU Version"
         required: true
         type: choice
-        default: "KernelSU-by-xx"
+        default: "ReSukiSU-wih-susfs"
         options:
           - None
           - Official-KernelSU
@@ -118,7 +118,7 @@ on:
         description: "SUSFS-NONGKI: select ur kernel version(for nongki)"
         required: true
         type: choice
-        default: 4.19
+        default: 4.9
         options:
           - None
           - 4.9
@@ -252,28 +252,9 @@ jobs:
           
       - name: Clone Kernel Source
         run: |
-          echo "⚠You Are Using The Debug Build"
-          if [[ "${{ inputs.kernel_source }}" == "Manual-Type" ]]; then
-
-            git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source_manual }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}.git ${{ inputs.soc }} || exit 1
-
-            if [[ "${{ inputs.has_modules_repo }}" == "true" ]]; then
-
-              git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source_manual }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}-modules.git ${{ inputs.soc }}-modules || exit 1
-
-            fi
-
-          else
-
-            git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}.git ${{ inputs.soc }} || exit 1
-
-            if [[ "${{ inputs.has_modules_repo }}" == "true" ]]; then
-
-                git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}-modules.git ${{ inputs.soc }}-modules || exit 1
-
-            fi
-
-          fi
+          
+            git clone --depth=1 -b lineage-22.2 https://github.com/liuweien339-sys/android_WeienKernel_xiaomi_sdm845.git dipper || exit 1
+            
       - name: Download AOSP Clang
         run: |
           case "${{ inputs.clang_version }}" in
@@ -370,10 +351,13 @@ jobs:
             curl -Lo patch2.patch https://raw.githubusercontent.com/ravindu644/Droidspaces-OSS/refs/heads/main/Documentation/resources/kernel-patches/non-GKI/02.fix_restore%20cgroup%20file%20prefix%20handling%20.patch || exit 1
             patch -p1 < patch2.patch || true
 
-          fi
+              curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_4.19.patch || exit 1
+              curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
 
-              sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
-              
+              patch -p1 < susfs.patch || true
+              bash inline.sh || true
+          fi
+          
           touch ./.scmversion
 
       - name: Fix EFI stub strrchr
