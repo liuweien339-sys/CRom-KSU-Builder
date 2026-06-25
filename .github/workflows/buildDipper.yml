@@ -253,7 +253,7 @@ jobs:
       - name: Clone Kernel Source
         run: |
           
-            git clone --depth=1 -b lineage-22.2 https://github.com/liuweien339-sys/android_WeienKernel_xiaomi_sdm845.git dipper || exit 1
+            git clone --depth=1 -b lineage-22.2 https://github.com/liuweien339-sys/android_WeienKernel_xiaomi_sdm845.git sdm845 || exit 1
             
       - name: Download AOSP Clang
         run: |
