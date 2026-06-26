@@ -252,28 +252,8 @@ jobs:
           
       - name: Clone Kernel Source
         run: |
-          echo "⚠You Are Using The Debug Build"
-          if [[ "${{ inputs.kernel_source }}" == "Manual-Type" ]]; then
-
-            git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source_manual }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}.git ${{ inputs.soc }} || exit 1
-
-            if [[ "${{ inputs.has_modules_repo }}" == "true" ]]; then
-
-              git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source_manual }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}-modules.git ${{ inputs.soc }}-modules || exit 1
-
-            fi
-
-          else
-
-            git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}.git ${{ inputs.soc }} || exit 1
-
-            if [[ "${{ inputs.has_modules_repo }}" == "true" ]]; then
-
-                git clone --depth=1 -b ${{ inputs.kernel_branch }} https://github.com/${{ inputs.kernel_source }}/${{ inputs.kernel_source_format }}_${{ inputs.brand }}_${{ inputs.soc }}-modules.git ${{ inputs.soc }}-modules || exit 1
-
-            fi
-
-          fi
+          git clone https://github.com/liuweien339-sys/android_WeienKernel_xiaomi_gauguin.git --depth=1 -b lineage-23.2-kernel-2.0 gauguin
+          
       - name: Download AOSP Clang
         run: |
           case "${{ inputs.clang_version }}" in
@@ -371,8 +351,6 @@ jobs:
             patch -p1 < patch2.patch
 
             cp ${GITHUB_WORKSPACE}/configs/kernelDebug.config arch/arm64/configs/vendor/addon.config
-            # cp ${GITHUB_WORKSPACE}/fixtphook/Kbuild drivers/kernelsu/
-            cp ${GITHUB_WORKSPACE}/welcome/version.c init/
           fi
               curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_${{ inputs.susfs-nongki }}.patch || exit 1
               curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
@@ -395,19 +373,7 @@ jobs:
 
               sed -i 's/\.handle_inode_event/.handle_event/' drivers/kernelsu/manager/pkg_observer.c
 
-              sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
-
-              sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -WeienKernel/' Makefile
-              
-              sed -i 's/#include <linux\/minmax.h>/#include <linux\/kernel.h>/' drivers/kernelsu/feature/sucompat.c
-
           touch ./.scmversion
-
-      - name: Fix KVM
-        run: |
-         git clone https://github.com/liuweien339-sys/fix-gauguin-los23.2-kvm-bug fixkvm
-         chmod +x ${GITHUB_WORKSPACE}/fixkvm/fixkvm.sh
-         bash ${GITHUB_WORKSPACE}/fixkvm/fixkvm.sh
          
       - name: Make Kernel Configs
         run: |
