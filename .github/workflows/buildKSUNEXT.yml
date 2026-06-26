@@ -300,52 +300,9 @@ jobs:
       - name: Include goodies
         run: |
           cd ${{ inputs.soc }} || exit 1
-          
-          case "${{ inputs.ksu_type }}" in
-
-            "None")
-              ;;
-
-            "Official-KernelSU")
-              curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main || exit 1
-              ;;
-
-            "KowSU")
-              curl -LSs "https://raw.githubusercontent.com/KOWX712/KernelSU/main/kernel/setup.sh" | bash -s master || exit 1
-              ;;
-
-            "KernelSU-by-xx")
-              curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/refs/heads/master/kernel/setup.sh" | bash -s master || exit 1
-              ;;
-
-            "KernelSU-Next")
-              curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s dev || exit 1
-              ;;
-
-            "KernelSU-Next-with-susfs")
+          echo "Debug Settings Up KernelSU"
               curl -LSs "https://raw.githubusercontent.com/pershoot/KernelSU-Next/refs/heads/dev-susfs/kernel/setup.sh" | bash -s dev-susfs || exit 1
-              ;;
-
-            "ReSukiSU"|"ReSukiSU-with-susfs")
-              curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/dev/kernel/setup.sh" | bash -s dev
-              ;;
-
-            "SukiSUUltra NonGKI")
-              curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s main || exit 1
-              ;;
-
-            "SukiSUUltra Plus NonGKI")
-               curl -LSs "https://raw.githubusercontent.com/ailixiyaX/SukiSU-Ultra-Plus/main/kernel/setup.sh" | bash -s nongki || exit 1
-              ;;
-          esac
-
-          if [[ "${{ inputs.droidspaces }}" == "5.4-6.6" ]]; then
-            echo "Unsupported"
-            
-          elif [[ "${{ inputs.droidspaces }}" == "3.18-4.19" ]]; then
-
-            # Why there is no 01.fix_kernel_panic_in_xt_qtaguid.patch? Because I cant find net/netfilter/xt_qtaguid.c in my k4.14 4.19 5.4
-            # 为什么没有01.fix_kernel_panic_in_xt_qtaguid.patch? 在我用的4.14 4.19 5.4内无此文件
+          echo "Done"
 
             curl -Lo patch2.patch https://raw.githubusercontent.com/ravindu644/Droidspaces-OSS/refs/heads/main/Documentation/resources/kernel-patches/non-GKI/02.fix_restore%20cgroup%20file%20prefix%20handling%20.patch || exit 1
             patch -p1 < patch2.patch
@@ -370,8 +327,6 @@ jobs:
               #define DEFAULT_KSU_MNT_ID 500000\
               #define DEFAULT_KSU_MNT_GROUP_ID 5000\
               #endif' fs/namespace.c
-
-              sed -i 's/\.handle_inode_event/.handle_event/' drivers/kernelsu/manager/pkg_observer.c
 
           touch ./.scmversion
          
