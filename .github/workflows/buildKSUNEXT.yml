@@ -252,7 +252,7 @@ jobs:
           
       - name: Clone Kernel Source
         run: |
-          git clone https://github.com/liuweien339-sys/android_WeienKernel_xiaomi_gauguin.git --depth=1 -b lineage-23.2-kernel-2.0 gauguin
+          git clone https://github.com/liuweien339-sys/android_WeienKernel_xiaomi_gauguin.git --depth=1 -b lineage-23.2-kernel2.0 gauguin
           
       - name: Download AOSP Clang
         run: |
