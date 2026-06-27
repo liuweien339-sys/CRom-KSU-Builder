@@ -372,8 +372,6 @@ jobs:
 
               sed -i 's/\.handle_inode_event/.handle_event/' drivers/kernelsu/manager/pkg_observer.c
 
-              sed -i 's/\.mmap_sem\s*=\s*__RWSEM_INITIALIZER(efi_mm\.mmap_sem)/.mmap_lock = __RWSEM_INITIALIZER(efi_mm.mmap_lock)/' drivers/firmware/efi/efi.c
-
           touch ./.scmversion
          
       - name: Make Kernel Configs
