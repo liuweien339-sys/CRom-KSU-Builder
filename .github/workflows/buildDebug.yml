@@ -343,14 +343,6 @@ jobs:
                curl -LSs "https://raw.githubusercontent.com/ailixiyaX/SukiSU-Ultra-Plus/main/kernel/setup.sh" | bash -s nongki || exit 1
               ;;
           esac
-
-          if [[ "${{ inputs.droidspaces }}" == "5.4-6.6" ]]; then
-            echo "Unsupported"
-            
-          elif [[ "${{ inputs.droidspaces }}" == "3.18-4.19" ]]; then
-          
-            cp ${GITHUB_WORKSPACE}/fixtphook/Kbuild drivers/kernelsu/
-          fi
               curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_4.19.patch || exit 1
               curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
 
