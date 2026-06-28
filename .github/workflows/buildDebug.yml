@@ -87,7 +87,7 @@ on:
         description: "KSU: KernelSU Version"
         required: true
         type: choice
-        default: "SukiSUUltra NonGKI"
+        default: "ReSukiSU-with-susfs"
         options:
           - None
           - Official-KernelSU
