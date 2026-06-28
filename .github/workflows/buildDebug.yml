@@ -350,8 +350,6 @@ jobs:
               patch -p1 < susfs.patch || true
               bash inline.sh || true
 
-              sed -i '243s/^/\/\/ /' drivers/kernelsu/core/init.c
-
               sed -i '/^#include <linux\/init.h>/a\
               #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT\
               #include <linux/susfs_def.h>\
