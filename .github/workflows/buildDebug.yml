@@ -343,28 +343,28 @@ jobs:
                curl -LSs "https://raw.githubusercontent.com/ailixiyaX/SukiSU-Ultra-Plus/main/kernel/setup.sh" | bash -s nongki || exit 1
               ;;
           esac
-              # curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_4.19.patch || exit 1
-              # curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
+              curl -Lo susfs.patch https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/Patch/susfs_patch_to_4.19.patch || exit 1
+              curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
 
-              # patch -p1 < susfs.patch || true
-              # bash inline.sh || true
+              patch -p1 < susfs.patch || true
+              bash inline.sh || true
 
-              # sed -i '/^#include <linux\/init.h>/a\
-              # ifdef CONFIG_KSU_SUSFS_SUS_MOUNT\
-              # include <linux/susfs_def.h>\
-              # \
-              # extern bool susfs_is_current_ksu_domain(void);\
-              # extern struct static_key_true susfs_is_sdcard_android_data_not_decrypted;\
-              # \
-              # define CL_COPY_MNT_NS 0x00000100\
-              # define VFSMOUNT_MNT_FLAGS_KSU_UNSHARED_MNT 0x80000000\
-              # define DEFAULT_KSU_MNT_ID 500000\
-              # define DEFAULT_KSU_MNT_GROUP_ID 5000\
-              # endif' fs/namespace.c
+              sed -i '/^#include <linux\/init.h>/a\
+              #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT\
+              #include <linux/susfs_def.h>\
+              \
+              extern bool susfs_is_current_ksu_domain(void);\
+              extern struct static_key_true susfs_is_sdcard_android_data_not_decrypted;\
+              \
+              #define CL_COPY_MNT_NS 0x00000100\
+              #define VFSMOUNT_MNT_FLAGS_KSU_UNSHARED_MNT 0x80000000\
+              #define DEFAULT_KSU_MNT_ID 500000\
+              #define DEFAULT_KSU_MNT_GROUP_ID 5000\
+              #endif' fs/namespace.c
 
-              # sed -i 's/\.handle_inode_event/.handle_event/' drivers/kernelsu/manager/pkg_observer.c
+              sed -i 's/\.handle_inode_event/.handle_event/' drivers/kernelsu/manager/pkg_observer.c
               
-              # sed -i 's/\.mmap_sem\s*=\s*__RWSEM_INITIALIZER(efi_mm\.mmap_sem)/.mmap_lock = __RWSEM_INITIALIZER(efi_mm.mmap_lock)/' drivers/firmware/efi/efi.c
+              sed -i 's/\.mmap_sem\s*=\s*__RWSEM_INITIALIZER(efi_mm\.mmap_sem)/.mmap_lock = __RWSEM_INITIALIZER(efi_mm.mmap_lock)/' drivers/firmware/efi/efi.c
 
           touch ./.scmversion
          
