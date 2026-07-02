@@ -1,0 +1,88 @@
+name: Compile Kerne
+
+on:
+  workflow_dispatch:
+jobs:
+  Kernel:
+    env:
+        GH_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+      checks: read
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup SWAP
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 16
+          
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+          bc bison flex \
+          libssl-dev \
+          libelf-dev \
+          libdw-dev \
+          build-essential \
+          lz4 \
+          git \
+          python3 \
+          curl \
+          dwarves \
+          cpio \
+          gcc-aarch64-linux-gnu \
+          linux-tools-common
+          
+      - name: Clone Kernel Source
+        run: |
+          git clone https://github.com/liuweien339-sys/android_kernel_oppo_mt6878 --depth=1 -b mian mt6877
+          
+      - name: Download AOSP Clang
+        run: |
+              curl -LO https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android14-qpr3-release/clang-r487747c.tar.gz
+
+              mkdir -p toolchains/clang-r487747c
+          
+              tar -xf "clang-r487747c.tar.gz" -C "toolchains/clang-r487747c"
+          
+      - name: Build Kernel Image
+        run: |
+          CLANG_ROOT="${GITHUB_WORKSPACE}/toolchains/clang-r487747c/bin"
+          export PATH="${CLANG_ROOT}:$PATH"
+          export ARCH=arm64
+          export SUBARCH=arm64
+          export LLVM=1
+          export LLVM_IAS=1
+          export CROSS_COMPILE=aarch64-linux-gnu-
+            
+          cd mt6878
+          
+          make -j6 O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
+          
+      - name: Make AnyKernel3
+        run: |
+          ZIP_NAME="${{ inputs.soc }}_${{ inputs.kernel_source }}-${{ inputs.kernel_branch }}_${{ inputs.ksu_type }}_$(date -u +"%Y%m%d_%H%M")"
+          git clone https://github.com/Kernel-SU/AnyKernel3.git
+          cp ${{ inputs.soc }}/out/arch/arm64/boot/Image ./Image
+          cd AnyKernel3 || exit 1
+
+          sed -i "s|ksu_supported=false|ksu_supported=true|" anykernel.sh
+
+          zip -r9 ../"${ZIP_NAME}.zip" * -x .git
+
+      - name: Upload to GitHub Actions Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+         name: kernel
+         path: |
+          *.ko
+          *.zip
+          Image
+          build.log
+          options.txt
+         if-no-files-found: error
+         compression-level: 6
