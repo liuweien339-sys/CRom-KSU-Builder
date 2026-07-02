@@ -39,7 +39,7 @@ jobs:
           
       - name: Clone Kernel Source
         run: |
-          git clone https://github.com/liuweien339-sys/android_kernel_oppo_mt6878 --depth=1 -b mian mt6877
+          git clone https://github.com/liuweien339-sys/android_kernel_oppo_mt6878 --depth=1 -b main mt6877
           
       - name: Download AOSP Clang
         run: |
