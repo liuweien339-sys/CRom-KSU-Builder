@@ -39,9 +39,10 @@ jobs:
           
       - name: Clone Kernel Source
         run: |
-          git clone https://github.com/liuweien339-sys/android_kernel_oppo_mt6878 --depth=1 -b main mt6878
+          git clone https://github.com/liuweien339-sys/android_kernel_oneplus_mt6878.git --depth=1 -b main mt6878
           git clone https://github.com/liuweien339-sys/android_kernel_modules_and_devicetree_oneplus_mt6878 --depth=1 -b main modules
           cp -r ${GITHUB_WORKSPACE}/modules/vendor ${GITHUB_WORKSPACE}/mt6878/
+          ls ${GITHUB_WORKSPACE}/mt6878/vendor
       - name: Download AOSP Clang
         run: |
               curl -LO https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android14-qpr3-release/clang-r487747c.tar.gz
