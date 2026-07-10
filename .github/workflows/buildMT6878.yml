@@ -62,8 +62,7 @@ jobs:
             
           cd mt6878
 
-          make defconfig
-          cp devconfig/.config .config
+          make olddefconfig
           
           make -j$(nproc) O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
 
