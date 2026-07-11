@@ -72,10 +72,13 @@ jobs:
           make olddefconfig || true
           
           make -j$(nproc) O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
-      
-          cd mt6878/out
+
+          - name: Build Summary
+            run: |
+            
+            cd mt6878/out
           
-          tar -czf ../build.tar.gz arch/arm64/
+            tar -czf ../build.tar.gz arch/arm64/
 
       - name: Upload to GitHub Actions Artifacts
         uses: actions/upload-artifact@v7
