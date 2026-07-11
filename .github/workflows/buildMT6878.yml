@@ -73,8 +73,8 @@ jobs:
           
           make -j$(nproc) O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
 
-          - name: Build Summary
-            run: |
+      - name: Build Summary
+        run: |
             
             cd mt6878/out
           
