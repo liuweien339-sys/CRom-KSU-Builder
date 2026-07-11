@@ -69,9 +69,9 @@ jobs:
             
           cd mt6878
 
-          make olddefconfig
+          make olddefconfig || true
           
-          make -j$(nproc) O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log || true
+          make -j$(nproc) O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
       
           cd mt6878/out
           
