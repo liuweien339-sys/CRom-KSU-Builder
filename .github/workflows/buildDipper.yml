@@ -302,7 +302,7 @@ jobs:
         run: |
           cd ${{ inputs.soc }} || exit 1
           
-          curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash -s main
+          curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/refs/heads/master/kernel/setup.sh" | bash -s master || exit 1
 
           if [[ "${{ inputs.droidspaces }}" == "5.4-6.6" ]]; then
             echo "Unsupported"
