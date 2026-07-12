@@ -87,7 +87,7 @@ on:
         description: "KSU: KernelSU Version"
         required: true
         type: choice
-        default: "ReSukiSU-wih-susfs"
+        default: "KernelSU-by-xx"
         options:
           - None
           - Official-KernelSU
@@ -118,7 +118,7 @@ on:
         description: "SUSFS-NONGKI: select ur kernel version(for nongki)"
         required: true
         type: choice
-        default: 4.9
+        default: None
         options:
           - None
           - 4.9
