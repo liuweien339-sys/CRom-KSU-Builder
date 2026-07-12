@@ -302,43 +302,7 @@ jobs:
         run: |
           cd ${{ inputs.soc }} || exit 1
           
-          case "${{ inputs.ksu_type }}" in
-
-            "None")
-              ;;
-
-            "Official-KernelSU")
-              curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main || exit 1
-              ;;
-
-            "KowSU")
-              curl -LSs "https://raw.githubusercontent.com/KOWX712/KernelSU/main/kernel/setup.sh" | bash -s master || exit 1
-              ;;
-
-            "KernelSU-by-xx")
-              curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/refs/heads/master/kernel/setup.sh" | bash -s master || exit 1
-              ;;
-
-            "KernelSU-Next")
-              curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s dev || exit 1
-              ;;
-
-            "KernelSU-Next-with-susfs")
-              curl -LSs "https://raw.githubusercontent.com/pershoot/KernelSU-Next/refs/heads/dev-susfs/kernel/setup.sh" | bash -s dev-susfs || exit 1
-              ;;
-
-            "ReSukiSU"|"ReSukiSU-with-susfs")
-              curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash -s main
-              ;;
-
-            "SukiSUUltra NonGKI")
-              curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s main || exit 1
-              ;;
-
-            "SukiSUUltra Plus NonGKI")
-               curl -LSs "https://raw.githubusercontent.com/ailixiyaX/SukiSU-Ultra-Plus/main/kernel/setup.sh" | bash -s nongki || exit 1
-              ;;
-          esac
+          curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash -s main
 
           if [[ "${{ inputs.droidspaces }}" == "5.4-6.6" ]]; then
             echo "Unsupported"
