@@ -350,7 +350,6 @@ jobs:
               patch -p1 < patch2.patch
 
               sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
-              find . -name "Makefile" -exec sed -i 's/-Werror\b/-Wno-error/g' {} \;
           touch ./.scmversion
          
       - name: Make Kernel Configs
