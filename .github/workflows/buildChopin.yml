@@ -327,7 +327,7 @@ jobs:
               ;;
 
             "ReSukiSU"|"ReSukiSU-with-susfs")
-              curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/dev/kernel/setup.sh" | bash -s dev
+              curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash -s main
               ;;
 
             "SukiSUUltra NonGKI")
