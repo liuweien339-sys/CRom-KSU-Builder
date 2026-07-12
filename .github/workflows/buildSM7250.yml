@@ -221,9 +221,9 @@ jobs:
         run: |
               curl -LO https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android12-qpr1-release/clang-r416183b.tar.gz
 
-          mkdir -p toolchains/clang-r416183b
-          
-          tar -xf "clang-r416183b.tar.gz" -C "toolchains/clang-r416183b" || exit 1
+               mkdir -p toolchains/clang-r416183b
+           
+               tar -xf "clang-r416183b.tar.gz" -C "toolchains/clang-r416183b" || exit 1
 
 
 
