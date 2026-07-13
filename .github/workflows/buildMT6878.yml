@@ -56,8 +56,7 @@ jobs:
               mkdir -p toolchains/clang-r487747c
           
               tar -xf "clang-r487747c.tar.gz" -C "toolchains/clang-r487747c"
-          
-      - name: Build Kernel Image
+      - name: Make Kernel Config
         run: |
           CLANG_ROOT="${GITHUB_WORKSPACE}/toolchains/clang-r487747c/bin"
           export PATH="${CLANG_ROOT}:$PATH"
@@ -69,11 +68,22 @@ jobs:
             
           cd mt6878
 
-          make olddefconfig || true
+          make turbo6x-mt6878.config
+      - name: Build Kernel Image
+        run: |
+          CLANG_ROOT="${GITHUB_WORKSPACE}/toolchains/clang-r487747c/bin"
+          export PATH="${CLANG_ROOT}:$PATH"
+          export ARCH=arm64
+          export SUBARCH=arm64
+          export LLVM=1
+          export LLVM_IAS=1
+          export CROSS_COMPILE=aarch64-linux-gnu-
+            
+          cd mt6878
           
           make -j$(nproc) O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
 
-      - name: Build Summary
+      - name: Upload Build Summary 
         run: |
             
             cd mt6878/out
