@@ -71,7 +71,7 @@ jobs:
               wget https://gitlab.com/simonpunk/susfs4ksu/-/raw/gki-android14-6.1/kernel_patches/include/linux/susfs.h
               wget https://gitlab.com/simonpunk/susfs4ksu/-/raw/gki-android14-6.1/kernel_patches/include/linux/susfs_def.h
               cd ${GITHUB_WORKSPACE}/mt6878
-              patch -p1 < 50_add_susfs_in_gki-android14-6.1.patch
+              patch -p1 < 50_add_susfs_in_gki-android14-6.1.patch || true
 
       - name: Build Kernel Image
         run: |
