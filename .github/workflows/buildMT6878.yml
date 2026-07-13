@@ -1,4 +1,4 @@
-name: Compile Kernel
+name: Compile Kernel MT6878
 
 on:
   workflow_dispatch:
@@ -68,7 +68,7 @@ jobs:
             
           cd mt6878
 
-          make turbo6x-mt6878.config
+          make turbo6x-mt6878_defconfig
       - name: Build Kernel Image
         run: |
           CLANG_ROOT="${GITHUB_WORKSPACE}/toolchains/clang-r487747c/bin"
