@@ -67,7 +67,7 @@ jobs:
           export CROSS_COMPILE=aarch64-linux-gnu-
             
           cd mt6878
-
+          make mrproper
           make turbo6x-mt6878_defconfig
       - name: Build Kernel Image
         run: |
@@ -80,7 +80,6 @@ jobs:
           export CROSS_COMPILE=aarch64-linux-gnu-
             
           cd mt6878
-          
           make -j$(nproc) O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
 
       - name: Upload Build Summary 
