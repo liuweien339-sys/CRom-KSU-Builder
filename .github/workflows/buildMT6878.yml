@@ -69,12 +69,12 @@ jobs:
           cd mt6878
           make mrproper || true
           make turbo6x-mt6878_defconfig
-          make -j$(nproc) O=out Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
+          make -j$(nproc) Image 2>&1 | tee ${GITHUB_WORKSPACE}/build.log
 
       - name: Upload Build Summary 
         run: |
             
-            cd mt6878/out
+            cd mt6878
           
             tar -czf ../build.tar.gz arch/arm64/
 
