@@ -388,7 +388,7 @@ jobs:
 
             fi
 
-            make O=out ${{ inputs.kernel_configs_manual }} addon.config 
+            make O=out ${{ inputs.kernel_configs_manual }}
 
           else
 
