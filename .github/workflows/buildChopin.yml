@@ -1,4 +1,4 @@
-name: Compile Kernel (Chopin)
+name: Compile Kernel (Chopin2)
 
 on:
   workflow_dispatch:
