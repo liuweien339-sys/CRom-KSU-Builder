@@ -370,13 +370,6 @@ jobs:
           
           fi
           
-          if [[ "${{ inputs.droidspaces }}" != "None" ]]; then
-            export ADDON_CONFIG="chopinAddon.config"
-          else
-            export ADDON_CONFIG=""
-          fi
-
-
           cd ${{ inputs.soc }} || exit 1
 
           if [[ "${{ inputs.kernel_configs }}" == "Manual-Type" ]]; then
