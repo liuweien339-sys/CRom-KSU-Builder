@@ -345,7 +345,8 @@ jobs:
 
               patch -p1 < susfs.patch || true
               bash inline.sh || true
-              
+              sed -i '170s/error/warning/g' drivers/kernelsu/Kbuild
+              sed -i '81s/-dirty//g' drivers/kernelsu/Kbuild
           touch ./.scmversion
          
       - name: Make Kernel Configs
