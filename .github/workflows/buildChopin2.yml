@@ -87,7 +87,7 @@ on:
         description: "KSU: KernelSU Version"
         required: true
         type: choice
-        default: "ReSukiSU-with-susfs"
+        default: "ReSukiSU"
         options:
           - None
           - Official-KernelSU
@@ -339,12 +339,6 @@ jobs:
               ;;
           esac
               sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
-              cp ${GITHUB_WORKSPACE}/susfs_patch_for_n10p.patch ${GITHUB_WORKSPACE}/chopin
-              cp ${GITHUB_WORKSPACE}/chopin/susfs_patch_for_n10p.patch ${GITHUB_WORKSPACE}/chopin/susfs.patch
-              curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
-
-              patch -p1 < susfs.patch || true
-              bash inline.sh || true
               sed -i '170s/error/warning/g' drivers/kernelsu/Kbuild
               sed -i '81s/-dirty//g' drivers/kernelsu/Kbuild
           touch ./.scmversion
@@ -415,6 +409,8 @@ jobs:
 
           fi
 
+           sed -i '/CONFIG_KSU_MANUAL_HOOK=y/d' out/.config
+           
           if [[ "${{ inputs.enable_tmpfs-xattr }}" == "true" ]]; then
 
             sed -i '/CONFIG_TMPFS_XATTR/d' out/.config
