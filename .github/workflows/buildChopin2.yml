@@ -340,6 +340,7 @@ jobs:
           esac
               sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
               cp ${GITHUB_WORKSPACE}/susfs_patch_for_n10p.patch ${GITHUB_WORKSPACE}/chopin
+              cp ${GITHUB_WORKSPACE}/chopin/susfs_patch_for_n10p.patch ${GITHUB_WORKSPACE}/chopin/susfs.patch
               curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
 
               patch -p1 < susfs.patch || true
