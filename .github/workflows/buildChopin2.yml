@@ -87,7 +87,7 @@ on:
         description: "KSU: KernelSU Version"
         required: true
         type: choice
-        default: "KernelSU-by-xx"
+        default: "ReSukiSU-with-susfs"
         options:
           - None
           - Official-KernelSU
@@ -339,6 +339,12 @@ jobs:
               ;;
           esac
               sed -i '/^if {$/,/^fi$/d' scripts/setlocalversion
+              cp ${GITHUB_WORKSPACE}/susfs_patch_for_n10p.patch ${GITHUB_WORKSPACE}/chopin
+              curl -Lo inline.sh https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/refs/heads/mainline/Patches/susfs_inline_hook_patches.sh || exit 1
+
+              patch -p1 < susfs.patch || true
+              bash inline.sh || true
+              
           touch ./.scmversion
          
       - name: Make Kernel Configs
